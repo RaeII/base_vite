@@ -25,7 +25,9 @@ Sem suíte de testes configurada. Validação = `bun run build` (typecheck via `
   - `src/index.css` — `@custom-variant dark`, paleta em CSS vars (`--primary`, `--background`, …) com override em `.dark`. Cores são tokens semânticos (`bg-primary`, `text-muted-foreground`), não valores crus.
   - `src/hooks/useTheme.ts` — hook global; estado inicial lido da classe `.dark` já presente; `toggle` persiste em `localStorage`.
   - Componentes usam só os tokens → reagem ao tema sozinhos.
-- Entrada: `src/main.tsx` → `App.tsx`. Sem router ainda.
+- Entrada: `src/main.tsx` → `App.tsx` (router + `AuthProvider` + `Suspense`; páginas lazy).
+- **API** (`src/api/`): instância axios única em `client.ts` (`baseURL: '/api'`, `withCredentials`, erros normalizados em `ApiError`); rotas por módulo em `src/api/<modulo>/` (`*.routes.ts` + `*.types.ts`). Nunca chame axios/fetch fora dessa pasta. Dev: proxy do Vite encaminha `/api` ao backend (`VITE_API_TARGET`, default `http://localhost:3000`).
+- **Auth**: JWT em cookie httpOnly (`token_access`) — JS nunca lê o token. `AuthProvider` (`src/components/`) espelha a sessão em `localStorage` e escuta `SESSION_EXPIRED_EVENT` (401 do interceptor); `useAuth` (`src/hooks/`) expõe `user/login/logout`; `RequireAuth` protege rotas filhas. Docs: `doc/funcoes/api.md`, `doc/funcoes/use-auth.md`.
 
 ## Regras do projeto (OBRIGATÓRIAS)
 

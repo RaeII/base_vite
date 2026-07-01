@@ -20,18 +20,22 @@ Leia **antes** de criar qualquer arquivo. São obrigatórias.
 Cada página tem sua própria pasta aqui e em `src/pages/`.
 
 - [[paginas/_template|Template de página]] — copie ao criar uma página
-
-> Páginas documentadas aparecem aqui conforme forem criadas.
+- [[paginas/login/index|Login]] — `/login`, formulário de autenticação
+- [[paginas/home/index|Home]] — `/`, showcase do tema (rota autenticada)
 
 ## 🧩 Componentes globais
 
 Reutilizáveis em qualquer página. **Documentar é obrigatório** ([[02-componentes]]).
 
 - [[componentes/_template|Template de componente]]
+- [[componentes/auth-provider|AuthProvider]] — provider global de autenticação (sessão, login/logout)
+- [[componentes/require-auth|RequireAuth]] — guarda de rotas autenticadas
 
 ## ⚙️ Funções e hooks globais
 
 - [[funcoes/_template|Template de função/hook]]
+- [[funcoes/api|api]] — cliente axios + rotas do backend (`src/api/`) — **toda request passa aqui**
+- [[funcoes/use-auth|useAuth]] — hook de autenticação (`src/hooks/useAuth.ts`)
 - `useTheme` — hook de tema claro/escuro (`src/hooks/useTheme.ts`)
 
 ---

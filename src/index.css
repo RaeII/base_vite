@@ -32,6 +32,11 @@
 
   --accent: #c7a24b;
   --accent-foreground: #1b1405;
+
+  --destructive: #b3261e;
+  --destructive-foreground: #fafafa;
+
+  --ring: #1b2a4e;
 }
 
 .dark {
@@ -56,6 +61,11 @@
 
   --accent: #d4b062;
   --accent-foreground: #1b1405;
+
+  --destructive: #e5544b;
+  --destructive-foreground: #f8fafc;
+
+  --ring: #3e5c92;
 }
 
 /* Expose tokens as Tailwind color utilities: bg-primary, text-accent, border-border, … */
@@ -73,6 +83,9 @@
   --color-secondary-foreground: var(--secondary-foreground);
   --color-accent: var(--accent);
   --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-ring: var(--ring);
 }
 
 @layer base {
