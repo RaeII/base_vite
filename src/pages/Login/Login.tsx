@@ -4,7 +4,6 @@ import { ApiError } from '../../api/client'
 import { useAuth } from '../../hooks/useAuth'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
-import { Label } from '@/components/ui/label'
 import {
   Card,
   CardContent,
@@ -52,30 +51,28 @@ function Login() {
           <CardDescription>Use seu username ou email.</CardDescription>
         </CardHeader>
         <CardContent>
-          <form onSubmit={handleSubmit} className="space-y-4">
-            <div className="space-y-1.5">
-              <Label htmlFor="identifier">Username ou email</Label>
-              <Input
-                id="identifier"
-                type="text"
-                required
-                autoComplete="username"
-                value={identifier}
-                onChange={(e) => setIdentifier(e.target.value)}
-              />
-            </div>
+          <form onSubmit={handleSubmit} className="space-y-5">
+            <Input
+              id="identifier"
+              label="Username ou email"
+              labelClassName="bg-card"
+              type="text"
+              required
+              autoComplete="username"
+              value={identifier}
+              onChange={(e) => setIdentifier(e.target.value)}
+            />
 
-            <div className="space-y-1.5">
-              <Label htmlFor="password">Senha</Label>
-              <Input
-                id="password"
-                type="password"
-                required
-                autoComplete="current-password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-              />
-            </div>
+            <Input
+              id="password"
+              label="Senha"
+              labelClassName="bg-card"
+              type="password"
+              required
+              autoComplete="current-password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+            />
 
             {error && (
               <p role="alert" className="text-sm text-destructive">
