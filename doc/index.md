@@ -2,7 +2,7 @@
 
 Índice mestre. Vault Obsidian — navegue pelos `[[links]]` ou pelo grafo.
 
-**Stack:** Vite 8 · React 19 · TypeScript · Tailwind v4.
+**Stack:** Vite 8 · React 19 · TypeScript · Tailwind v4 · [[componentes/shadcn-ui|shadcn/ui]].
 
 ---
 
@@ -27,6 +27,7 @@ Cada página tem sua própria pasta aqui e em `src/pages/`.
 
 Reutilizáveis em qualquer página. **Documentar é obrigatório** ([[02-componentes]]).
 
+- [[componentes/shadcn-ui|shadcn/ui]] — **base dos componentes** (primitivos em `src/components/ui/`)
 - [[componentes/_template|Template de componente]]
 - [[componentes/auth-provider|AuthProvider]] — provider global de autenticação (sessão, login/logout)
 - [[componentes/require-auth|RequireAuth]] — guarda de rotas autenticadas

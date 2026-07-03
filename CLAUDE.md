@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Stack
 
-Vite 8 · React 19 · TypeScript · Tailwind v4. Package manager: **bun** (`bun.lock`).
+Vite 8 · React 19 · TypeScript · Tailwind v4 · shadcn/ui (new-york, lucide). Package manager: **bun** (`bun.lock`).
 
 ## Comandos
 
@@ -34,8 +34,9 @@ Sem suíte de testes configurada. Validação = `bun run build` (typecheck via `
 Detalhe e templates em `doc/` (vault Obsidian, [[wikilinks]]). Índice: `doc/index.md`.
 
 - **Uma pasta por página** em `src/pages/<Pagina>/`, documentada em `doc/paginas/<pagina>/`.
-- **Componente exclusivo da página** → `src/pages/<Pagina>/components/`. **Usado por 2+ páginas** → `src/components/` (global).
-- **Todo componente global é documentado** em `doc/componentes/` — para reusar, não repetir.
+- **shadcn/ui é a base**: primitivos (Button, Input, …) vêm de `bunx --bun shadcn@latest add <x>` → `src/components/ui/` (vendorizados, alias `@/`). Não escreva primitivo do zero. Cores usam os tokens da marca em `src/index.css` (sem paleta própria do shadcn). Doc: `doc/componentes/shadcn-ui.md`.
+- **Componente exclusivo da página** → `src/pages/<Pagina>/components/`. **Usado por 2+ páginas** → `src/components/` (global, compõe primitivos `ui/`).
+- **Todo componente global é documentado** em `doc/componentes/` — para reusar, não repetir. Exceção: primitivos em `src/components/ui/` (doc upstream).
 - **Funções/hooks**: reutilizável → `src/lib/` ou `src/hooks/` + doc em `doc/funcoes/`. Exclusivo da página → fica na página.
 - Comece local; na 2ª página que precisar, **promova e documente — nunca copie**.
 - **Performance React+Vite** (`doc/regras/04-performance.md`): code-split por página (`lazy`+`Suspense`); memoizar só com medida; estado no componente mais baixo; keys estáveis; **sem barrel files** (quebram tree-shaking/HMR — importe direto).
