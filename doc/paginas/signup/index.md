@@ -8,14 +8,11 @@
 
 ## O que faz
 
-Formulário público de cadastro (username, email opcional e senha). Cria a conta
-via `useAuth().signup`, persiste a sessão retornada pelo backend e redireciona
-para a rota de origem (guardada pelo `RequireAuth`) ou `/`. Já autenticado →
-redireciona direto.
+`src/pages/Signup/Signup.tsx`, formulário coleta username, email obrigatório, senha com confirmação e visualizador, cria via `useAuth().signup`, persiste sessão, redireciona para a rota de origem ou `/` e usuário já autenticado redireciona direto.
 
 ## Componentes exclusivos
 
-Nenhum — formulário simples inline.
+`src/pages/Signup/Signup.tsx`, `PasswordInput` é local porque só o Signup usa visualizador de senha, manter na página até existir segunda página usando o mesmo padrão.
 
 ## Hooks/funções exclusivos
 
