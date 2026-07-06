@@ -23,7 +23,7 @@ Sem suíte de testes configurada. Validação = `bun run build` (typecheck via `
 - **Tema (claro/escuro)** é a peça central, espalhada por 4 arquivos:
   - `index.html` — script anti-FOUC: lê `localStorage.theme` e seta `.dark` no `<html>` **antes** do React montar.
   - `src/index.css` — `@custom-variant dark`, paleta em CSS vars (`--primary`, `--background`, …) com override em `.dark`. Cores são tokens semânticos (`bg-primary`, `text-muted-foreground`), não valores crus.
-  - `src/hooks/useTheme.ts` — hook global; estado inicial lido da classe `.dark` já presente; `toggle` persiste em `localStorage`.
+  - `src/hooks/useTheme.ts` — hook global via `useSyncExternalStore`; fonte da verdade é a classe `.dark` no `<html>` (N consumidores sincronizados, sem provider); `toggle` persiste em `localStorage`.
   - Componentes usam só os tokens → reagem ao tema sozinhos.
 - Entrada: `src/main.tsx` → `App.tsx` (router + `AuthProvider` + `Suspense`; páginas lazy).
 - **API** (`src/api/`): instância axios única em `client.ts` (`baseURL: '/api'`, `withCredentials`, erros normalizados em `ApiError`); rotas por módulo em `src/api/<modulo>/` (`*.routes.ts` + `*.types.ts`). Nunca chame axios/fetch fora dessa pasta. Dev: proxy do Vite encaminha `/api` ao backend (`VITE_API_TARGET`, default `http://localhost:3000`).
@@ -39,7 +39,7 @@ Detalhe e templates em `doc/` (vault Obsidian, [[wikilinks]]). Índice: `doc/ind
 - **Todo componente global é documentado** em `doc/componentes/` — para reusar, não repetir. Exceção: primitivos em `src/components/ui/` (doc upstream).
 - **Funções/hooks**: reutilizável → `src/lib/` ou `src/hooks/` + doc em `doc/funcoes/`. Exclusivo da página → fica na página.
 - Comece local; na 2ª página que precisar, **promova e documente — nunca copie**.
-- **Performance React+Vite** (`doc/regras/04-performance.md`): code-split por página (`lazy`+`Suspense`); memoizar só com medida; estado no componente mais baixo; keys estáveis; **sem barrel files** (quebram tree-shaking/HMR — importe direto).
+- **Performance React+Vite** (`doc/regras/04-performance.md`): code-split por página (`lazy`+`Suspense`); memoizar só com medida (React 19 + Compiler já memoizam); estado no componente mais baixo e **escada de estado** (`useState` → lift → Context estável → React Query p/ dados de API → Zustand p/ global mutável; Redux não); prop drilling se resolve com composição antes de context; `useEffect` só para sistema externo; keys estáveis; **sem barrel files** (quebram tree-shaking/HMR — importe direto).
 - **Documentação sempre atualizada**, só o necessário, prática, no formato `/caveman-review` (1 linha por item: local, problema/fato, ação).
 - Sempre aplicar **`/karpathy-guidelines`** (mudanças cirúrgicas, sem overcomplicar, critério de sucesso verificável) e **`/ponytail`** (solução mais simples que funciona; reusar antes de escrever).
 

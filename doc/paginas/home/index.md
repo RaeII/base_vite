@@ -24,5 +24,6 @@ Nenhum.
 ## Componentes globais usados
 
 - [[componentes/require-auth|RequireAuth]] — protege a rota
+- [[componentes/shadcn-ui|shadcn/ui]] — `Button` (header e showcase)
 - [[funcoes/use-auth|useAuth]] — `user` e `logout`
 - `useTheme` — toggle claro/escuro

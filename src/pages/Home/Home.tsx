@@ -1,5 +1,6 @@
 import { useTheme } from '../../hooks/useTheme'
 import { useAuth } from '../../hooks/useAuth'
+import { Button } from '@/components/ui/button'
 
 function Swatch({
   name,
@@ -28,20 +29,12 @@ function Home() {
         <span className="text-lg font-semibold tracking-tight">base_vite</span>
         <div className="flex items-center gap-3">
           <span className="text-sm text-muted-foreground">{user?.username}</span>
-          <button
-            type="button"
-            onClick={toggle}
-            className="rounded-lg border px-3 py-1.5 text-sm font-medium transition-colors hover:bg-muted"
-          >
+          <Button variant="outline" size="sm" onClick={toggle}>
             {theme === 'dark' ? '☀ Light' : '☾ Dark'}
-          </button>
-          <button
-            type="button"
-            onClick={() => void logout()}
-            className="rounded-lg border px-3 py-1.5 text-sm font-medium transition-colors hover:bg-muted"
-          >
+          </Button>
+          <Button variant="outline" size="sm" onClick={() => void logout()}>
             Sair
-          </button>
+          </Button>
         </div>
       </header>
 
@@ -70,15 +63,11 @@ function Home() {
         </div>
 
         <div className="mt-10 flex flex-wrap gap-3">
-          <button className="rounded-lg bg-primary px-4 py-2 font-medium text-primary-foreground transition hover:opacity-90">
-            Primary
-          </button>
-          <button className="rounded-lg bg-accent px-4 py-2 font-medium text-accent-foreground transition hover:opacity-90">
+          <Button>Primary</Button>
+          <Button className="bg-accent text-accent-foreground hover:bg-accent/90">
             Accent
-          </button>
-          <button className="rounded-lg border px-4 py-2 font-medium transition-colors hover:bg-muted">
-            Outline
-          </button>
+          </Button>
+          <Button variant="outline">Outline</Button>
         </div>
 
         <div className="mt-10 rounded-xl border bg-card p-6 text-card-foreground">

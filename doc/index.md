@@ -13,7 +13,7 @@ Leia **antes** de criar qualquer arquivo. São obrigatórias.
 - [[01-estrutura]] — onde cada arquivo mora (`src/` e `doc/`)
 - [[02-componentes]] — componente global vs. exclusivo da página
 - [[03-funcoes]] — funções/hooks globais vs. locais
-- [[04-performance]] — React 19 + Vite: renderizar rápido
+- [[04-performance]] — React 19 + Vite: componentes, render, estado, props e front-end rápidos
 
 ## 📄 Páginas
 
