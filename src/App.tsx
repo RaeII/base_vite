@@ -5,6 +5,7 @@ import { RequireAuth } from './components/RequireAuth'
 
 // Code-split por página: cada rota vira um chunk próprio (doc/regras/04-performance).
 const Login = lazy(() => import('./pages/Login/Login'))
+const Signup = lazy(() => import('./pages/Signup/Signup'))
 const Home = lazy(() => import('./pages/Home/Home'))
 
 function PageFallback() {
@@ -22,6 +23,7 @@ function App() {
         <Suspense fallback={<PageFallback />}>
           <Routes>
             <Route path="/login" element={<Login />} />
+            <Route path="/signup" element={<Signup />} />
 
             {/* Rotas autenticadas: tudo aqui dentro exige sessão */}
             <Route element={<RequireAuth />}>

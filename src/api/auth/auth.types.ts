@@ -9,8 +9,16 @@ export interface LoginInput {
   password: string
 }
 
+export interface SignupInput {
+  username: string
+  email?: string
+  password: string
+}
+
 export interface LoginResponse {
   data: User
   /** TTL da sessão em segundos (o token em si fica no cookie httpOnly). */
   expiresIn: number
 }
+
+export type SignupResponse = LoginResponse

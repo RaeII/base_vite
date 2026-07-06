@@ -21,6 +21,7 @@ Cada página tem sua própria pasta aqui e em `src/pages/`.
 
 - [[paginas/_template|Template de página]] — copie ao criar uma página
 - [[paginas/login/index|Login]] — `/login`, formulário de autenticação
+- [[paginas/signup/index|Signup]] — `/signup`, cadastro público de usuário
 - [[paginas/home/index|Home]] — `/`, showcase do tema (rota autenticada)
 
 ## 🧩 Componentes globais

@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useMemo, useState, type ReactNode } from 'react'
-import { login as apiLogin, logout as apiLogout } from '../api/auth/auth.routes'
-import type { LoginInput } from '../api/auth/auth.types'
+import { login as apiLogin, logout as apiLogout, signup as apiSignup } from '../api/auth/auth.routes'
+import type { LoginInput, SignupInput } from '../api/auth/auth.types'
 import { SESSION_EXPIRED_EVENT } from '../api/client'
 import type { User } from '../api/user/user.types'
 import { AuthContext } from '../hooks/useAuth'
@@ -35,17 +35,28 @@ function loadSession(): User | null {
   }
 }
 
+function saveSession(user: User, expiresIn: number) {
+  localStorage.setItem(
+    STORAGE_KEY,
+    JSON.stringify({ user, expiresAt: Date.now() + expiresIn * 1000 }),
+  )
+}
+
 export function AuthProvider({ children }: { children: ReactNode }) {
   const [user, setUser] = useState<User | null>(loadSession)
 
   const login = useCallback(async (input: LoginInput) => {
     const { data: loggedUser, expiresIn } = await apiLogin(input)
-    localStorage.setItem(
-      STORAGE_KEY,
-      JSON.stringify({ user: loggedUser, expiresAt: Date.now() + expiresIn * 1000 }),
-    )
+    saveSession(loggedUser, expiresIn)
     setUser(loggedUser)
     return loggedUser
+  }, [])
+
+  const signup = useCallback(async (input: SignupInput) => {
+    const { data: createdUser, expiresIn } = await apiSignup(input)
+    saveSession(createdUser, expiresIn)
+    setUser(createdUser)
+    return createdUser
   }, [])
 
   const logout = useCallback(async () => {
@@ -74,9 +85,10 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       isAuthenticated: user !== null,
       isAdmin: user?.is_admin ?? false,
       login,
+      signup,
       logout,
     }),
-    [user, login, logout],
+    [user, login, signup, logout],
   )
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>

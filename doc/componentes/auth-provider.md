@@ -6,10 +6,10 @@
 
 ## O que faz
 
-Provider global de autenticação. Dono do estado da sessão: faz login/logout na
-API, espelha `{ user, expiresAt }` em `localStorage` (chave `auth.session`)
-para sobreviver a reload, e derruba a sessão quando o interceptor do axios
-detecta 401 (`SESSION_EXPIRED_EVENT`). Envolve as rotas no `App.tsx`.
+Provider global de autenticação. Dono do estado da sessão: faz login/signup/logout
+na API, espelha `{ user, expiresAt }` em `localStorage` (chave `auth.session`)
+para sobreviver a reload, e derruba a sessão quando o interceptor do axios detecta
+401 (`SESSION_EXPIRED_EVENT`). Envolve as rotas no `App.tsx`.
 
 ## Props
 

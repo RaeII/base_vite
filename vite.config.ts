@@ -20,7 +20,7 @@ export default defineConfig(({ mode }) => {
         // O browser só fala com a origem do Vite → sem CORS, cookie httpOnly
         // fica host-only na origem do front (mais seguro que expor o backend).
         '/api': {
-          target: env.VITE_API_TARGET || 'http://localhost:3000',
+          target: env.VITE_API_URL || 'http://localhost:3000',
           changeOrigin: true,
         },
       },

@@ -12,17 +12,18 @@ import {
   CardTitle,
 } from '@/components/ui/card'
 
-function Login() {
-  const { isAuthenticated, login } = useAuth()
+function Signup() {
+  const { isAuthenticated, signup } = useAuth()
   const navigate = useNavigate()
   const location = useLocation()
 
-  const [identifier, setIdentifier] = useState('')
+  const [username, setUsername] = useState('')
+  const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [error, setError] = useState<string | null>(null)
   const [submitting, setSubmitting] = useState(false)
 
-  // Rota de origem guardada pelo RequireAuth — volta para lá após logar.
+  // Rota de origem guardada pelo RequireAuth — volta para lá após cadastrar.
   const locationState = location.state as { from?: { pathname: string } } | null
   const from = locationState?.from?.pathname ?? '/'
 
@@ -35,10 +36,15 @@ function Login() {
     setError(null)
     setSubmitting(true)
     try {
-      await login({ login: identifier, password })
+      const trimmedEmail = email.trim()
+      await signup({
+        username: username.trim(),
+        email: trimmedEmail || undefined,
+        password,
+      })
       navigate(from, { replace: true })
     } catch (err) {
-      setError(err instanceof ApiError ? err.message : 'Erro inesperado ao entrar')
+      setError(err instanceof ApiError ? err.message : 'Erro inesperado ao criar conta')
     } finally {
       setSubmitting(false)
     }
@@ -48,20 +54,33 @@ function Login() {
     <div className="flex min-h-svh items-center justify-center bg-background px-6 text-foreground">
       <Card className="w-full max-w-sm">
         <CardHeader>
-          <CardTitle className="text-2xl tracking-tight">Entrar</CardTitle>
-          <CardDescription>Use seu username ou email.</CardDescription>
+          <CardTitle className="text-2xl tracking-tight">Criar conta</CardTitle>
+          <CardDescription>Cadastre seu username, email opcional e senha.</CardDescription>
         </CardHeader>
         <CardContent>
           <form onSubmit={handleSubmit} className="space-y-5">
             <Input
-              id="identifier"
-              label="Username ou email"
+              id="username"
+              label="Username"
               labelClassName="bg-card"
               type="text"
               required
+              minLength={3}
+              maxLength={45}
               autoComplete="username"
-              value={identifier}
-              onChange={(e) => setIdentifier(e.target.value)}
+              value={username}
+              onChange={(e) => setUsername(e.target.value)}
+            />
+
+            <Input
+              id="email"
+              label="Email (opcional)"
+              labelClassName="bg-card"
+              type="email"
+              maxLength={45}
+              autoComplete="email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
             />
 
             <Input
@@ -70,7 +89,9 @@ function Login() {
               labelClassName="bg-card"
               type="password"
               required
-              autoComplete="current-password"
+              minLength={8}
+              maxLength={72}
+              autoComplete="new-password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
             />
@@ -82,17 +103,17 @@ function Login() {
             )}
 
             <Button type="submit" disabled={submitting} className="w-full">
-              {submitting ? 'Entrando…' : 'Entrar'}
+              {submitting ? 'Criando…' : 'Criar conta'}
             </Button>
 
             <p className="text-center text-sm text-muted-foreground">
-              Não tem conta?{' '}
+              Já tem conta?{' '}
               <Link
-                to="/signup"
+                to="/login"
                 state={{ from: locationState?.from }}
                 className="font-medium text-primary underline-offset-4 hover:underline"
               >
-                Criar conta
+                Entrar
               </Link>
             </p>
           </form>
@@ -102,4 +123,4 @@ function Login() {
   )
 }
 
-export default Login
+export default Signup

@@ -14,8 +14,8 @@ axios/fetch direto de página/componente; crie a função aqui.
 src/api/
   client.ts           → instância axios + ApiError + interceptor 401
   auth/
-    auth.routes.ts    → login(), logout()
-    auth.types.ts     → LoginInput, LoginResponse
+    auth.routes.ts    → login(), signup(), logout()
+    auth.types.ts     → LoginInput, SignupInput, LoginResponse, SignupResponse
   user/
     user.routes.ts    → findAllUsers(), findUserById(), createUser(), updateUser(), deleteUser()
     user.types.ts     → User, CreateUserInput, Paginated<T>
@@ -24,7 +24,7 @@ src/api/
 ## client.ts
 
 - `baseURL: '/api'` — dev: proxy do Vite (`vite.config.ts`, alvo em
-  `VITE_API_TARGET`); produção: reverse proxy. Browser nunca fala direto com o backend.
+  `VITE_API_URL`); produção: reverse proxy. Browser nunca fala direto com o backend.
 - `withCredentials: true` — envia cookie httpOnly `token_access` (o JS nunca lê o token).
 - Interceptor: toda falha vira `ApiError { status, message, details }`
   (`status 0` = rede/timeout); 401 fora do login dispara `SESSION_EXPIRED_EVENT`

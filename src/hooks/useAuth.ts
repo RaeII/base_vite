@@ -1,5 +1,5 @@
 import { createContext, useContext } from 'react'
-import type { LoginInput } from '../api/auth/auth.types'
+import type { LoginInput, SignupInput } from '../api/auth/auth.types'
 import type { User } from '../api/user/user.types'
 
 export interface AuthContextValue {
@@ -9,6 +9,8 @@ export interface AuthContextValue {
   isAdmin: boolean
   /** Autentica no backend (seta o cookie httpOnly) e persiste a sessão local. */
   login: (input: LoginInput) => Promise<User>
+  /** Cria conta no backend (seta o cookie httpOnly) e persiste a sessão local. */
+  signup: (input: SignupInput) => Promise<User>
   /** Remove o cookie no backend e limpa a sessão local. */
   logout: () => Promise<void>
 }
