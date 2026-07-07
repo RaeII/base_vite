@@ -41,23 +41,23 @@ function Home() {
       <main className="mx-auto max-w-3xl px-6 py-10">
         <h1 className="text-4xl font-semibold tracking-tight">Tailwind v4 base</h1>
         <p className="mt-3 text-muted-foreground">
-          Luxo, confiança e simplicidade — tema claro e escuro.
+          Navy, creme e terracota — tema claro e escuro.
         </p>
 
         <div className="mt-10 grid gap-4 sm:grid-cols-3">
           <Swatch
             name="Primary"
-            desc="Confiança"
+            desc="Navy ↔ Creme"
             className="bg-primary text-primary-foreground"
           />
           <Swatch
             name="Secondary"
-            desc="Simplicidade"
+            desc="Superfície"
             className="bg-secondary text-secondary-foreground"
           />
           <Swatch
             name="Accent"
-            desc="Luxo (auxiliar)"
+            desc="Terracota (auxiliar) · #C46A4A"
             className="bg-accent text-accent-foreground"
           />
         </div>

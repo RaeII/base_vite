@@ -5,10 +5,12 @@
 @custom-variant dark (&:where(.dark, .dark *));
 
 /*
-  Brand palette — 3 colors:
-  - primary  : Midnight Navy   → confidence / trust
-  - secondary: Stone (neutral) → simplicity
-  - accent   : Champagne Gold  → luxury        (auxiliary color)
+  Brand palette (ver imagem da marca) — tema base é ESCURO:
+  - background: Navy    #05111D → base
+  - card      : Navy+   #04283D → superfícies elevadas
+  - primary   : Creme   #F3EBD3 → cor dominante / ações
+  - accent    : Terracota #C46A4A → destaque (cor auxiliar)
+  Light: papéis invertidos (fundo creme, primary navy).
 */
 
 :root {
@@ -17,68 +19,68 @@
   /* shadcn: raio base dos componentes (lg = --radius; sm/md/xl derivam em @theme). */
   --radius: 0.5rem;
 
-  --background: #fafafa;
-  --foreground: #16203a;
+  --background: #fbf5e6;
+  --foreground: #05111d;
 
-  --card: #ffffff;
-  --card-foreground: #16203a;
+  --card: #f3ebd3;
+  --card-foreground: #05111d;
 
   /* popover/input: exigidos pelo shadcn — mapeados às superfícies da marca. */
-  --popover: #ffffff;
-  --popover-foreground: #16203a;
-  --input: #e4e6eb;
+  --popover: #f3ebd3;
+  --popover-foreground: #05111d;
+  --input: #e2d6b6;
 
-  --muted: #f1f2f4;
-  --muted-foreground: #6b7280;
+  --muted: #ece1c6;
+  --muted-foreground: #4b5563;
 
-  --border: #e4e6eb;
+  --border: #e2d6b6;
 
-  --primary: #1b2a4e;
-  --primary-foreground: #fafafa;
+  --primary: #04283d;
+  --primary-foreground: #f3ebd3;
 
-  --secondary: #edeef1;
-  --secondary-foreground: #1b2a4e;
+  --secondary: #e9dfc3;
+  --secondary-foreground: #04283d;
 
-  --accent: #c7a24b;
-  --accent-foreground: #1b1405;
+  --accent: #c46a4a;
+  --accent-foreground: #2b1206;
 
   --destructive: #b3261e;
   --destructive-foreground: #fafafa;
 
-  --ring: #1b2a4e;
+  --ring: #04283d;
 }
 
 .dark {
   color-scheme: dark;
 
-  --background: #0b1120;
-  --foreground: #e7e9ef;
+  --background: #05111d;
+  --foreground: #f3ebd3;
 
-  --card: #111a2d;
-  --card-foreground: #e7e9ef;
+  --card: #12232f;
+  --card-foreground: #f3ebd3;
 
-  --popover: #111a2d;
-  --popover-foreground: #e7e9ef;
-  --input: #232e45;
+  --popover: #04283d;
+  --popover-foreground: #f3ebd3;
+  --input: #424e5591;
 
-  --muted: #1a2336;
-  --muted-foreground: #94a0b8;
+  --muted: #0a2233;
+  --muted-foreground: #a7b4c2;
 
-  --border: #232e45;
+  --border: #071721;
 
-  --primary: #3e5c92;
-  --primary-foreground: #f8fafc;
+  --primary: #f3ebd3;
+  --primary-foreground: #05111d;
 
-  --secondary: #1a2336;
-  --secondary-foreground: #e7e9ef;
+  --secondary: #0a2233;
+  --secondary-foreground: #f3ebd3;
 
-  --accent: #d4b062;
-  --accent-foreground: #1b1405;
+  --accent: #c46a4a;
+  --accent-foreground: #2b1206;
 
   --destructive: #e5544b;
-  --destructive-foreground: #f8fafc;
+  --destructive-foreground: #fafafa;
 
-  --ring: #3e5c92;
+  --ring: #f3ebd3;
 }
 
 /* Expose tokens as Tailwind color utilities: bg-primary, text-accent, border-border, … */

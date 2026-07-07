@@ -11,7 +11,7 @@ vêm do shadcn, não são escritos do zero. Config em `components.json` (raiz).
   para `src/components/ui/`. Você é dono do arquivo — pode editar.
 - Estilo: **new-york** · Tailwind v4 · ícones **lucide-react**.
 - Cores: reutilizam os **tokens da marca** já definidos em `src/index.css`
-  (`--primary` navy, `--accent` gold, …). shadcn **não** trouxe paleta própria —
+  (`--primary` creme/navy, `--accent` terracota, …). shadcn **não** trouxe paleta própria —
   os componentes reagem ao tema claro/escuro sozinhos.
 
 ## Onde mora cada coisa
