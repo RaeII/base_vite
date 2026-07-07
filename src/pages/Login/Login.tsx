@@ -4,6 +4,7 @@ import { ApiError } from '../../api/client'
 import { useAuth } from '../../hooks/useAuth'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
+import { ThemeToggle } from '@/components/ThemeToggle'
 import {
   Card,
   CardContent,
@@ -45,7 +46,10 @@ function Login() {
   }
 
   return (
-    <div className="flex min-h-svh items-center justify-center bg-background px-6 text-foreground">
+    <div className="relative flex min-h-svh items-center justify-center bg-background px-6 text-foreground">
+      <div className="absolute right-6 top-6">
+        <ThemeToggle />
+      </div>
       <Card className="w-full max-w-sm">
         <CardHeader>
           <CardTitle className="text-2xl tracking-tight">Entrar</CardTitle>

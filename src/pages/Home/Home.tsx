@@ -1,6 +1,6 @@
-import { useTheme } from '../../hooks/useTheme'
 import { useAuth } from '../../hooks/useAuth'
 import { Button } from '@/components/ui/button'
+import { ThemeToggle } from '@/components/ThemeToggle'
 
 function Swatch({
   name,
@@ -20,7 +20,6 @@ function Swatch({
 }
 
 function Home() {
-  const { theme, toggle } = useTheme()
   const { user, logout } = useAuth()
 
   return (
@@ -29,9 +28,7 @@ function Home() {
         <span className="text-lg font-semibold tracking-tight">base_vite</span>
         <div className="flex items-center gap-3">
           <span className="text-sm text-muted-foreground">{user?.username}</span>
-          <Button variant="outline" size="sm" onClick={toggle}>
-            {theme === 'dark' ? '☀ Light' : '☾ Dark'}
-          </Button>
+          <ThemeToggle />
           <Button variant="outline" size="sm" onClick={() => void logout()}>
             Sair
           </Button>

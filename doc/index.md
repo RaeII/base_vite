@@ -32,6 +32,7 @@ Reutilizáveis em qualquer página. **Documentar é obrigatório** ([[02-compone
 - [[componentes/_template|Template de componente]]
 - [[componentes/auth-provider|AuthProvider]] — provider global de autenticação (sessão, login/logout)
 - [[componentes/require-auth|RequireAuth]] — guarda de rotas autenticadas
+- [[componentes/theme-toggle|ThemeToggle]] — switch custom claro/escuro (ícones Lucide)
 
 ## ⚙️ Funções e hooks globais
 
