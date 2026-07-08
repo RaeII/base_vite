@@ -48,6 +48,16 @@
   --destructive-foreground: #fafafa;
 
   --ring: #04283d;
+
+  /* sidebar (shadcn) — aliases dos tokens da marca; fonte única de verdade. */
+  --sidebar: var(--card);
+  --sidebar-foreground: var(--foreground);
+  --sidebar-primary: var(--primary);
+  --sidebar-primary-foreground: var(--primary-foreground);
+  --sidebar-accent: var(--secondary);
+  --sidebar-accent-foreground: var(--secondary-foreground);
+  --sidebar-border: var(--border);
+  --sidebar-ring: var(--ring);
 }
 
 .dark {
@@ -56,7 +66,7 @@
   --background: #05111d;
   --foreground: #f3ebd3;
 
-  --card: #12232f;
+  --card: #0a2233;
   --card-foreground: #f3ebd3;
 
   --popover: #04283d;
@@ -81,6 +91,16 @@
   --destructive-foreground: #fafafa;
 
   --ring: #f3ebd3;
+
+  /* sidebar herda os mesmos aliases; os valores mudam via os tokens acima. */
+  --sidebar: var(--card);
+  --sidebar-foreground: var(--foreground);
+  --sidebar-primary: var(--primary);
+  --sidebar-primary-foreground: var(--primary-foreground);
+  --sidebar-accent: var(--secondary);
+  --sidebar-accent-foreground: var(--secondary-foreground);
+  --sidebar-border: var(--border);
+  --sidebar-ring: var(--ring);
 }
 
 /* Expose tokens as Tailwind color utilities: bg-primary, text-accent, border-border, … */
@@ -109,6 +129,14 @@
   --color-destructive: var(--destructive);
   --color-destructive-foreground: var(--destructive-foreground);
   --color-ring: var(--ring);
+  --color-sidebar-ring: var(--sidebar-ring);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar: var(--sidebar);
 }
 
 @layer base {

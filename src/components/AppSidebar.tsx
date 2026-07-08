@@ -1,0 +1,157 @@
+import { ChevronsUpDown, Command, FlaskConical, LayoutDashboard, LogOut, Palette } from 'lucide-react'
+import { useAuth } from '@/hooks/useAuth'
+import { ThemeToggle } from '@/components/ThemeToggle'
+import { Avatar, AvatarFallback } from '@/components/ui/avatar'
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from '@/components/ui/dropdown-menu'
+import {
+  Sidebar,
+  SidebarContent,
+  SidebarFooter,
+  SidebarGroup,
+  SidebarGroupLabel,
+  SidebarHeader,
+  SidebarMenu,
+  SidebarMenuButton,
+  SidebarMenuItem,
+  SidebarRail,
+  SidebarTrigger,
+  useSidebar,
+} from '@/components/ui/sidebar'
+
+// Menus de teste — trocar pelos reais (com rota/onClick) quando existirem.
+const menus = [
+  { title: 'Dashboard', icon: LayoutDashboard },
+  { title: 'Teste', icon: FlaskConical },
+]
+
+function initials(name: string) {
+  return name.slice(0, 2).toUpperCase()
+}
+
+export function AppSidebar() {
+  const { user, logout } = useAuth()
+  const { isMobile, state, toggleSidebar } = useSidebar()
+  const name = user?.username ?? '—'
+  const collapsed = state === 'collapsed'
+
+  return (
+    <Sidebar variant="inset" collapsible="icon">
+      {/* Topo: nome + ícone do projeto */}
+      <SidebarHeader>
+        <SidebarMenu>
+          <SidebarMenuItem className="flex items-center gap-1">
+            {/* Recolhido: clicar no logo expande. Expandido: logo é decorativo. */}
+            <SidebarMenuButton
+              size="lg"
+              onClick={collapsed ? toggleSidebar : undefined}
+              className={
+                collapsed
+                  ? 'flex-1'
+                  : 'flex-1 cursor-default hover:bg-transparent active:bg-transparent'
+              }
+            >
+              <div className="flex aspect-square size-8 items-center justify-center rounded-lg bg-sidebar-primary text-sidebar-primary-foreground">
+                <Command className="size-4" />
+              </div>
+              <div className="grid flex-1 text-left leading-tight">
+                <span className="truncate font-semibold">base_vite</span>
+                <span className="truncate text-xs text-muted-foreground">Projeto</span>
+              </div>
+            </SidebarMenuButton>
+            {/* Botão de recolher — some quando já recolhido (aí o logo expande). */}
+            <SidebarTrigger className="size-8 shrink-0 group-data-[collapsible=icon]:hidden" />
+          </SidebarMenuItem>
+        </SidebarMenu>
+      </SidebarHeader>
+
+      <SidebarContent>
+        <SidebarGroup>
+          <SidebarGroupLabel>Menu</SidebarGroupLabel>
+          <SidebarMenu>
+            {menus.map((item) => (
+              <SidebarMenuItem key={item.title}>
+                <SidebarMenuButton tooltip={item.title}>
+                  <item.icon />
+                  <span>{item.title}</span>
+                </SidebarMenuButton>
+              </SidebarMenuItem>
+            ))}
+          </SidebarMenu>
+        </SidebarGroup>
+      </SidebarContent>
+
+      {/* Rodapé: usuário + menu de configurações (tema, sair) */}
+      <SidebarFooter>
+        <SidebarMenu>
+          <SidebarMenuItem>
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <SidebarMenuButton
+                  size="lg"
+                  className="data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground"
+                >
+                  <Avatar className="size-8 rounded-lg">
+                    <AvatarFallback className="rounded-lg bg-sidebar-primary text-sidebar-primary-foreground">
+                      {initials(name)}
+                    </AvatarFallback>
+                  </Avatar>
+                  <div className="grid flex-1 text-left leading-tight">
+                    <span className="truncate font-semibold">{name}</span>
+                    <span className="truncate text-xs text-muted-foreground">{user?.email ?? 'Sem e-mail'}</span>
+                  </div>
+                  <ChevronsUpDown className="ml-auto size-4" />
+                </SidebarMenuButton>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent
+                className="w-(--radix-dropdown-menu-trigger-width) min-w-56 rounded-lg"
+                side={isMobile ? 'bottom' : 'right'}
+                align="end"
+                sideOffset={4}
+              >
+                <DropdownMenuLabel className="p-0 font-normal">
+                  <div className="flex items-center gap-2 px-1 py-1.5 text-left">
+                    <Avatar className="size-8 rounded-lg">
+                      <AvatarFallback className="rounded-lg bg-sidebar-primary text-sidebar-primary-foreground">
+                        {initials(name)}
+                      </AvatarFallback>
+                    </Avatar>
+                    <div className="grid flex-1 text-left leading-tight">
+                      <span className="truncate font-semibold">{name}</span>
+                      <span className="truncate text-xs text-muted-foreground">{user?.email ?? 'Sem e-mail'}</span>
+                    </div>
+                  </div>
+                </DropdownMenuLabel>
+                <DropdownMenuSeparator />
+                {/* Tema: linha que não fecha o menu ao interagir. */}
+                <div
+                  className="flex items-center justify-between gap-2 px-2 py-1.5 text-sm"
+                  onClick={(e) => e.stopPropagation()}
+                >
+                  <span className="flex items-center gap-2">
+                    <Palette className="size-4" />
+                    Tema
+                  </span>
+                  <ThemeToggle />
+                </div>
+                <DropdownMenuSeparator />
+                <DropdownMenuItem variant="destructive" onSelect={() => void logout()}>
+                  <LogOut />
+                  Sair
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
+          </SidebarMenuItem>
+        </SidebarMenu>
+      </SidebarFooter>
+
+      <SidebarRail />
+    </Sidebar>
+  )
+}
