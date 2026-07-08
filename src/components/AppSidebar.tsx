@@ -1,4 +1,5 @@
-import { ChevronsUpDown, Command, FlaskConical, LayoutDashboard, LogOut, Palette } from 'lucide-react'
+import { ChevronsUpDown, Command, LogOut, Palette } from 'lucide-react'
+import { navItems } from '@/lib/nav'
 import { useAuth } from '@/hooks/useAuth'
 import { ThemeToggle } from '@/components/ThemeToggle'
 import { Avatar, AvatarFallback } from '@/components/ui/avatar'
@@ -22,12 +23,6 @@ import {
   SidebarTrigger,
   useSidebar,
 } from '@/components/ui/sidebar'
-
-// Menus de teste — trocar pelos reais (com rota/onClick) quando existirem.
-const menus = [
-  { title: 'Dashboard', icon: LayoutDashboard },
-  { title: 'Teste', icon: FlaskConical },
-]
 
 function initials(name: string) {
   return name.slice(0, 2).toUpperCase()
@@ -68,7 +63,7 @@ export function AppSidebar() {
       <SidebarContent>
         <SidebarGroup>
           <SidebarMenu>
-            {menus.map((item) => (
+            {navItems.map((item) => (
               <SidebarMenuItem key={item.title}>
                 <SidebarMenuButton tooltip={item.title}>
                   <item.icon />

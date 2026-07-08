@@ -1,4 +1,5 @@
 import { AppSidebar } from '@/components/AppSidebar'
+import { MobileNav } from '@/components/MobileNav'
 import { Button } from '@/components/ui/button'
 import { SidebarInset, SidebarProvider } from '@/components/ui/sidebar'
 
@@ -28,7 +29,7 @@ function Home() {
           <span className="text-lg font-semibold tracking-tight">base_vite</span>
         </header>
 
-        <main className="mx-auto w-full max-w-3xl px-6 py-10">
+        <main className="mx-auto w-full max-w-3xl px-6 pt-10 pb-24 md:pb-10">
           <h1 className="text-4xl font-semibold tracking-tight">Tailwind v4 base</h1>
           <p className="mt-3 text-muted-foreground">
             Navy, creme e terracota — tema claro e escuro.
@@ -67,6 +68,8 @@ function Home() {
             </p>
           </div>
         </main>
+
+        <MobileNav />
       </SidebarInset>
     </SidebarProvider>
   )

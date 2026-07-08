@@ -31,6 +31,7 @@ Reutilizáveis em qualquer página. **Documentar é obrigatório** ([[02-compone
 - [[componentes/shadcn-ui|shadcn/ui]] — **base dos componentes** (primitivos em `src/components/ui/`)
 - [[componentes/_template|Template de componente]]
 - [[componentes/app-sidebar|AppSidebar]] — sidebar do app (nav + usuário/tema no rodapé)
+- [[componentes/mobile-nav|MobileNav]] — navegação mobile (bottom bar + drawer lateral; `< md`)
 - [[componentes/auth-provider|AuthProvider]] — provider global de autenticação (sessão, login/logout)
 - [[componentes/require-auth|RequireAuth]] — guarda de rotas autenticadas
 - [[componentes/theme-toggle|ThemeToggle]] — switch custom claro/escuro (ícones Lucide)

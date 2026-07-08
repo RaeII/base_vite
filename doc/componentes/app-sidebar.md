@@ -12,7 +12,7 @@ O respiro é o padrão do shadcn (`8px`, via `p-2`/`m-2` no primitivo). Para mai
 ## Layout
 
 - **Topo (`SidebarHeader`):** ícone + nome do projeto (`base_vite`, estático) + **único** botão de toggle (`SidebarTrigger`), sempre **abaixo** da logo (mesma altura nos dois estados). Aberto → `<` alinhado à direita (nome visível). Recolhido → `>` centrado (nome some). Sem `SidebarRail` (barra da borda removida).
-- **Meio (`SidebarContent`):** menus de **teste** (`Dashboard`, `Teste`) — placeholders sem rota. Trocar pelos reais em `menus[]` (dar `onClick`/link e `isActive`).
+- **Meio (`SidebarContent`):** menus de `navItems` (fonte única em `src/lib/nav.ts`, compartilhada com [[componentes/mobile-nav|MobileNav]]). Placeholders sem rota — dar `to` no `nav.ts` quando a página existir.
 - **Rodapé (`SidebarFooter`):** avatar + nome/e-mail do usuário; clique abre dropdown com **Tema** (o [[componentes/theme-toggle|ThemeToggle]], linha que não fecha o menu) e **Sair** (`logout`).
 
 ## Cores
