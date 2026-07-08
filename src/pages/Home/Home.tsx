@@ -1,6 +1,6 @@
 import { AppSidebar } from '@/components/AppSidebar'
 import { Button } from '@/components/ui/button'
-import { SidebarInset, SidebarProvider, SidebarTrigger } from '@/components/ui/sidebar'
+import { SidebarInset, SidebarProvider } from '@/components/ui/sidebar'
 
 function Swatch({
   name,
@@ -25,7 +25,6 @@ function Home() {
       <AppSidebar />
       <SidebarInset>
         <header className="flex h-14 items-center gap-3 border-b px-4">
-          <SidebarTrigger />
           <span className="text-lg font-semibold tracking-tight">base_vite</span>
         </header>
 

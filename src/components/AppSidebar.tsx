@@ -15,12 +15,10 @@ import {
   SidebarContent,
   SidebarFooter,
   SidebarGroup,
-  SidebarGroupLabel,
   SidebarHeader,
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
-  SidebarRail,
   SidebarTrigger,
   useSidebar,
 } from '@/components/ui/sidebar'
@@ -37,43 +35,38 @@ function initials(name: string) {
 
 export function AppSidebar() {
   const { user, logout } = useAuth()
-  const { isMobile, state, toggleSidebar } = useSidebar()
+  const { isMobile } = useSidebar()
   const name = user?.username ?? '—'
-  const collapsed = state === 'collapsed'
 
   return (
     <Sidebar variant="inset" collapsible="icon">
       {/* Topo: nome + ícone do projeto */}
       <SidebarHeader>
         <SidebarMenu>
-          <SidebarMenuItem className="flex items-center gap-1">
-            {/* Recolhido: clicar no logo expande. Expandido: logo é decorativo. */}
-            <SidebarMenuButton
-              size="lg"
-              onClick={collapsed ? toggleSidebar : undefined}
-              className={
-                collapsed
-                  ? 'flex-1'
-                  : 'flex-1 cursor-default hover:bg-transparent active:bg-transparent'
-              }
-            >
+          <SidebarMenuItem className="flex flex-col gap-2">
+            {/* Logo — sempre visível; texto some ao recolher. */}
+            <div className="flex w-full items-center gap-2 overflow-hidden group-data-[collapsible=icon]:justify-center">
               <div className="flex aspect-square size-8 items-center justify-center rounded-lg bg-sidebar-primary text-sidebar-primary-foreground">
                 <Command className="size-4" />
               </div>
-              <div className="grid flex-1 text-left leading-tight">
+              <div className="grid flex-1 text-left leading-tight group-data-[collapsible=icon]:hidden">
                 <span className="truncate font-semibold">base_vite</span>
                 <span className="truncate text-xs text-muted-foreground">Projeto</span>
               </div>
-            </SidebarMenuButton>
-            {/* Botão de recolher — some quando já recolhido (aí o logo expande). */}
-            <SidebarTrigger className="size-8 shrink-0 group-data-[collapsible=icon]:hidden" />
+            </div>
+            {/* Linha do trigger: "Menu" à esquerda (aberto), botão à direita; texto some ao recolher. */}
+            <div className="flex w-full items-center justify-between group-data-[collapsible=icon]:justify-center">
+              <span className="px-2 text-xs font-medium text-sidebar-foreground/70 group-data-[collapsible=icon]:hidden">
+                Menu
+              </span>
+              <SidebarTrigger className="size-8 shrink-0" />
+            </div>
           </SidebarMenuItem>
         </SidebarMenu>
       </SidebarHeader>
 
       <SidebarContent>
         <SidebarGroup>
-          <SidebarGroupLabel>Menu</SidebarGroupLabel>
           <SidebarMenu>
             {menus.map((item) => (
               <SidebarMenuItem key={item.title}>
@@ -150,8 +143,6 @@ export function AppSidebar() {
           </SidebarMenuItem>
         </SidebarMenu>
       </SidebarFooter>
-
-      <SidebarRail />
     </Sidebar>
   )
 }

@@ -11,7 +11,7 @@ O respiro é o padrão do shadcn (`8px`, via `p-2`/`m-2` no primitivo). Para mai
 
 ## Layout
 
-- **Topo (`SidebarHeader`):** ícone + nome do projeto (`base_vite`). Hoje estático.
+- **Topo (`SidebarHeader`):** ícone + nome do projeto (`base_vite`, estático) + **único** botão de toggle (`SidebarTrigger`), sempre **abaixo** da logo (mesma altura nos dois estados). Aberto → `<` alinhado à direita (nome visível). Recolhido → `>` centrado (nome some). Sem `SidebarRail` (barra da borda removida).
 - **Meio (`SidebarContent`):** menus de **teste** (`Dashboard`, `Teste`) — placeholders sem rota. Trocar pelos reais em `menus[]` (dar `onClick`/link e `isActive`).
 - **Rodapé (`SidebarFooter`):** avatar + nome/e-mail do usuário; clique abre dropdown com **Tema** (o [[componentes/theme-toggle|ThemeToggle]], linha que não fecha o menu) e **Sair** (`logout`).
 
@@ -23,12 +23,12 @@ Usa os tokens `--sidebar*` de `src/index.css`, que são **aliases** dos tokens d
 
 ```tsx
 import { AppSidebar } from '@/components/AppSidebar'
-import { SidebarInset, SidebarProvider, SidebarTrigger } from '@/components/ui/sidebar'
+import { SidebarInset, SidebarProvider } from '@/components/ui/sidebar'
 
 <SidebarProvider>
   <AppSidebar />
   <SidebarInset>
-    <header><SidebarTrigger /></header>
+    {/* toggle vive dentro da própria sidebar (header), não aqui */}
     {/* conteúdo da página */}
   </SidebarInset>
 </SidebarProvider>
