@@ -1,20 +1,24 @@
 ```bash
-# 1. Clonar o template em uma nova pasta
-git clone git@github.com:RaeII/base_vite.git $NOME_PROJETO
-cd meu-projeto
+PROJECT=ratiou
 
-# 2. Começar um histórico git limpo
-rm -rf .git && git init -b main && git add . && git commit -m "feat: init"
+git clone git@github.com:RaeII/base_vite.git "$PROJECT"
+cd "$PROJECT" || exit 1
 
-# 3. Criar o repositório no GitHub e subir automaticamente
-gh repo create $NOME_PROJETO --private --source=. --push
+# Começar um histórico git limpo
+rm -rf .git
+git init -b main
+git add .
+git commit -m "feat: init"
 
-# 5. Instalar dependências
+# Criar o repositório no GitHub usando o mesmo nome da pasta atual
+gh repo create "$(basename "$PWD")" --private --source=. --push
+
+# Instalar dependências
 bun install
 
-# 6. Configurar variáveis de ambiente
-cp .env.example .env      # preencha PORT, JWT_SECRET, DB_* etc.
+# Configurar variáveis de ambiente
+cp .env.example .env
 
-# 7. Rodar em desenvolvimento (hot-reload)
+# Rodar em desenvolvimento
 bun dev
 ```
