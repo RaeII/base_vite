@@ -32,7 +32,7 @@ function Home() {
         <main className="mx-auto w-full max-w-3xl px-6 pt-10 pb-24 md:pb-10">
           <h1 className="text-4xl font-semibold tracking-tight">Tailwind v4 base</h1>
           <p className="mt-3 text-muted-foreground">
-            Navy, creme e terracota — tema claro e escuro.
+            Preto, creme e dourado — tema claro e escuro.
           </p>
 
           <div className="mt-10 grid gap-4 sm:grid-cols-3">
@@ -48,7 +48,7 @@ function Home() {
             />
             <Swatch
               name="Accent"
-              desc="Terracota (auxiliar) · #C46A4A"
+              desc="Dourado (auxiliar) · #D4A853"
               className="bg-accent text-accent-foreground"
             />
           </div>

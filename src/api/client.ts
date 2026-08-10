@@ -44,9 +44,10 @@ api.interceptors.response.use(
       (status === 0 ? 'Falha de conexão com o servidor' : error.message)
 
     // 401 em qualquer rota exceto o próprio login = sessão inválida/expirada.
-    // O AuthProvider escuta este evento e limpa a sessão local.
+    // Limpa a sessão local e garante o retorno imediato à autenticação.
     if (status === 401 && !error.config?.url?.includes('/auth/login')) {
       window.dispatchEvent(new Event(SESSION_EXPIRED_EVENT))
+      window.location.replace('/login')
     }
 
     return Promise.reject(new ApiError(status, message, error.response?.data))

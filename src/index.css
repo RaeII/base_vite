@@ -5,12 +5,12 @@
 @custom-variant dark (&:where(.dark, .dark *));
 
 /*
-  Brand palette (ver imagem da marca) — tema base é ESCURO:
-  - background: Navy    #05111D → base
-  - card      : Navy+   #04283D → superfícies elevadas
+  Brand palette — tema base é ESCURO:
+  - background: Preto   #000000 → base
+  - card      : Grafite #121212 → superfícies elevadas
   - primary   : Creme   #F3EBD3 → cor dominante / ações
-  - accent    : Terracota #C46A4A → destaque (cor auxiliar)
-  Light: papéis invertidos (fundo creme, primary navy).
+  - accent    : Dourado #D4A853 → destaque (cor auxiliar)
+  Light: fundo creme, primary navy e accent dourado.
 */
 
 :root {
@@ -41,8 +41,8 @@
   --secondary: #e9dfc3;
   --secondary-foreground: #04283d;
 
-  --accent: #c46a4a;
-  --accent-foreground: #2b1206;
+  --accent: #d4a853;
+  --accent-foreground: #1a1200;
 
   --destructive: #b3261e;
   --destructive-foreground: #fafafa;
@@ -63,29 +63,29 @@
 .dark {
   color-scheme: dark;
 
-  --background: #05111d;
+  --background: #000000;
   --foreground: #f3ebd3;
 
-  --card: #0a2233;
+  --card: #121212;
   --card-foreground: #f3ebd3;
 
-  --popover: #04283d;
+  --popover: #171717;
   --popover-foreground: #f3ebd3;
-  --input: #424e5591;
+  --input: #2a2a2a;
 
-  --muted: #0a2233;
-  --muted-foreground: #a7b4c2;
+  --muted: #171717;
+  --muted-foreground: #a3a3a3;
 
-  --border: #071721;
+  --border: #262626;
 
   --primary: #f3ebd3;
-  --primary-foreground: #05111d;
+  --primary-foreground: #000000;
 
-  --secondary: #0a2233;
+  --secondary: #171717;
   --secondary-foreground: #f3ebd3;
 
-  --accent: #c46a4a;
-  --accent-foreground: #2b1206;
+  --accent: #d4a853;
+  --accent-foreground: #1a1200;
 
   --destructive: #e5544b;
   --destructive-foreground: #fafafa;

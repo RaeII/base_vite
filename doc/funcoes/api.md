@@ -28,7 +28,8 @@ src/api/
 - `withCredentials: true` — envia cookie httpOnly `token_access` (o JS nunca lê o token).
 - Interceptor: toda falha vira `ApiError { status, message, details }`
   (`status 0` = rede/timeout); 401 fora do login dispara `SESSION_EXPIRED_EVENT`
-  → [[componentes/auth-provider|AuthProvider]] derruba a sessão.
+  → [[componentes/auth-provider|AuthProvider]] derruba a sessão e o cliente
+  redireciona imediatamente para `/login`.
 
 ## Uso
 
