@@ -47,7 +47,7 @@ function toApiError(error: AxiosError<{ message?: string }>) {
 }
 
 // 401 nessas rotas é resposta final (credencial errada / sessão morta), não access vencido.
-const NO_REFRESH = ['/auth/login', '/auth/admin/login', '/auth/refresh']
+const NO_REFRESH = ['/auth/login', '/auth/admin/login', '/auth/google', '/auth/refresh']
 
 // Renovação em andamento: requests que tomam 401 juntas esperam a mesma,
 // em vez de cada uma rotacionar o refresh token.

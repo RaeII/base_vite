@@ -20,8 +20,8 @@ Leia **antes** de criar qualquer arquivo. São obrigatórias.
 Cada página tem sua própria pasta aqui e em `src/pages/`.
 
 - [[paginas/_template|Template de página]] — copie ao criar uma página
-- [[paginas/login/index|Login]] — `/login` e `/admin/login` (modo admin, step-up)
-- [[paginas/signup/index|Signup]] — `/signup`, cadastro público de usuário
+- [[paginas/login/index|Login]] — `/login` e `/admin/login` (modo admin, step-up) · login com Google
+- [[paginas/signup/index|Signup]] — `/signup`, cadastro público de usuário · 1º acesso pelo Google
 - [[paginas/home/index|Home]] — `/`, showcase do tema (rota autenticada)
 - [[paginas/admin-dashboard/index|Admin · Visão geral]] — `/admin`, números, atividade recente, saúde
 - [[paginas/admin-users/index|Admin · Usuários]] — `/admin/users`, busca, filtros, criar/editar, desativar, encerrar sessões
@@ -37,6 +37,7 @@ Reutilizáveis em qualquer página. **Documentar é obrigatório** ([[02-compone
 - [[componentes/app-sidebar|AppSidebar]] — sidebar do app (nav + usuário/tema no rodapé)
 - [[componentes/mobile-nav|MobileNav]] — navegação mobile (bottom bar + drawer lateral; `< md`)
 - [[componentes/auth-provider|AuthProvider]] — provider global de autenticação (sessão, login/logout)
+- [[componentes/google-login-button|GoogleLoginButton]] — "Continuar com Google" (GIS sob demanda) + divisor "ou"
 - [[componentes/require-auth|RequireAuth]] — guarda de rotas autenticadas
 - [[componentes/require-admin|RequireAdmin]] — guarda da área admin (sessão admin elevada)
 - [[componentes/admin-layout|AdminLayout]] — shell da área admin (sidebar/bottom bar com `adminNavItems`)

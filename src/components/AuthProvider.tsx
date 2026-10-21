@@ -2,11 +2,13 @@ import { useCallback, useEffect, useMemo, useState, type ReactNode } from 'react
 import {
   adminLogin as apiAdminLogin,
   login as apiLogin,
+  loginWithGoogle as apiLoginWithGoogle,
   logout as apiLogout,
   me as apiMe,
+  registerWithGoogle as apiRegisterWithGoogle,
   signup as apiSignup,
 } from '../api/auth/auth.routes'
-import type { LoginInput, SignupInput } from '../api/auth/auth.types'
+import type { GoogleRegisterInput, LoginInput, SignupInput } from '../api/auth/auth.types'
 import { SESSION_EXPIRED_EVENT } from '../api/client'
 import type { User } from '../api/user/user.types'
 import { AuthContext } from '../hooks/useAuth'
@@ -80,6 +82,19 @@ export function AuthProvider({ children, fallback = null }: AuthProviderProps) {
     return createdUser
   }, [])
 
+  // Google: conta existente abre a sessão; 1º acesso só devolve os dados a confirmar.
+  const loginWithGoogle = useCallback(async (credential: string) => {
+    const result = await apiLoginWithGoogle({ credential })
+    if (result.status === 'authenticated') setSession({ user: result.data, expired: false })
+    return result
+  }, [])
+
+  const registerWithGoogle = useCallback(async (input: GoogleRegisterInput) => {
+    const { data: createdUser } = await apiRegisterWithGoogle(input)
+    setSession({ user: createdUser, expired: false })
+    return createdUser
+  }, [])
+
   const logout = useCallback(async () => {
     try {
       await apiLogout()
@@ -98,9 +113,11 @@ export function AuthProvider({ children, fallback = null }: AuthProviderProps) {
       login,
       adminLogin,
       signup,
+      loginWithGoogle,
+      registerWithGoogle,
       logout,
     }),
-    [session, login, adminLogin, signup, logout],
+    [session, login, adminLogin, signup, loginWithGoogle, registerWithGoogle, logout],
   )
 
   // Sem isso, quem está logado veria o /login piscar até o /auth/me responder.

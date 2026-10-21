@@ -6,6 +6,7 @@ import { useAuth } from '../../hooks/useAuth'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { ThemeToggle } from '@/components/ThemeToggle'
+import { GoogleLoginButton } from '@/components/GoogleLoginButton'
 import {
   Card,
   CardContent,
@@ -23,7 +24,7 @@ interface LoginProps {
 }
 
 function Login({ admin = false }: LoginProps) {
-  const { user, isAuthenticated, sessionExpired, login, adminLogin } = useAuth()
+  const { user, isAuthenticated, sessionExpired, login, adminLogin, loginWithGoogle } = useAuth()
   const navigate = useNavigate()
   const location = useLocation()
 
@@ -55,6 +56,22 @@ function Login({ admin = false }: LoginProps) {
     }
   }
 
+  // Conta existente entra (o <Navigate> acima redireciona); 1º acesso confirma o username no cadastro.
+  async function handleGoogle(credential: string) {
+    setError(null)
+    setSubmitting(true)
+    try {
+      const result = await loginWithGoogle(credential)
+      if (result.status === 'registration_required') {
+        navigate('/signup', { state: { from: locationState?.from, google: result } })
+      }
+    } catch (err) {
+      setError(err instanceof ApiError ? err.message : 'Erro ao entrar com o Google')
+    } finally {
+      setSubmitting(false)
+    }
+  }
+
   return (
     <div className="relative flex min-h-svh items-center justify-center bg-background px-6 text-foreground">
       <div className="absolute right-6 top-6">
@@ -76,7 +93,8 @@ function Login({ admin = false }: LoginProps) {
                 : 'Use seu username ou email.'}
           </CardDescription>
         </CardHeader>
-        <CardContent>
+        <CardContent className="space-y-5">
+          {!admin && <GoogleLoginButton onCredential={handleGoogle} disabled={submitting} />}
           <form onSubmit={handleSubmit} className="space-y-5">
             <Input
               id="identifier"

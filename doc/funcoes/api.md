@@ -14,8 +14,9 @@ axios/fetch direto de página/componente; crie a função aqui.
 src/api/
   client.ts           → instância axios + ApiError + interceptor 401 (refresh silencioso)
   auth/
-    auth.routes.ts    → login(), adminLogin(), signup(), me(), logout()
-    auth.types.ts     → LoginInput, SignupInput, LoginResponse, SignupResponse
+    auth.routes.ts    → login(), adminLogin(), signup(), loginWithGoogle(), registerWithGoogle(), me(), logout()
+    auth.types.ts     → LoginInput, SignupInput, LoginResponse, SignupResponse,
+                        GoogleAuthInput, GoogleAuthResponse, GoogleRegistrationRequired, GoogleRegisterInput
   user/
     user.routes.ts    → findAllUsers({ page, limit, search, status }), findUserById(), createUser(),
                         updateUser(), deleteUser(), revokeUserSessions()
@@ -33,7 +34,7 @@ src/api/
   15 min) e `token_refresh` (o JS nunca lê os tokens).
 - Interceptor: toda falha vira `ApiError { status, message, details }`
   (`status 0` = rede/timeout).
-- **401 = access vencido** (exceto em `/auth/login`, `/auth/admin/login` e `/auth/refresh`): chama
+- **401 = access vencido** (exceto em `/auth/login`, `/auth/admin/login`, `/auth/google*` e `/auth/refresh`): chama
   `POST /auth/refresh` **uma vez** e repete a request original — transparente
   para quem chamou. Requests que tomam 401 juntas esperam a **mesma** renovação
   (single-flight), em vez de cada uma rotacionar o refresh token.

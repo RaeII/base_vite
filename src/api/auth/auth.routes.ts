@@ -1,6 +1,14 @@
 import { api } from '../client'
 import type { User } from '../user/user.types'
-import type { LoginInput, LoginResponse, SignupInput, SignupResponse } from './auth.types'
+import type {
+  GoogleAuthInput,
+  GoogleAuthResponse,
+  GoogleRegisterInput,
+  LoginInput,
+  LoginResponse,
+  SignupInput,
+  SignupResponse,
+} from './auth.types'
 
 // Rotas /auth do backend. Os tokens vivem em cookies httpOnly (`token_access`
 // e `token_refresh`) — setados no login/signup, removidos no logout. O JS nunca
@@ -23,6 +31,21 @@ export async function adminLogin(input: LoginInput) {
 
 export async function signup(input: SignupInput) {
   const { data } = await api.post<SignupResponse>('/auth/signup', input)
+  return data
+}
+
+/**
+ * Login/cadastro com Google: envia o ID token do GIS. Conta existente → cookies de
+ * sessão; 1º acesso → `registration_required` (nada criado ainda).
+ */
+export async function loginWithGoogle(input: GoogleAuthInput) {
+  const { data } = await api.post<GoogleAuthResponse>('/auth/google', input)
+  return data
+}
+
+/** Conclui o 1º acesso pelo Google: cria a conta (sem senha) e abre a sessão. */
+export async function registerWithGoogle(input: GoogleRegisterInput) {
+  const { data } = await api.post<SignupResponse>('/auth/google/register', input)
   return data
 }
 

@@ -22,3 +22,29 @@ export interface LoginResponse {
 }
 
 export type SignupResponse = LoginResponse
+
+/** Body do login com Google: o `credential` (ID token) devolvido pelo GIS. */
+export interface GoogleAuthInput {
+  credential: string
+}
+
+/** 1º acesso pelo Google: a conta ainda não existe — o usuário confirma o username. */
+export interface GoogleRegistrationRequired {
+  status: 'registration_required'
+  /** Prova assinada pelo backend (15 min) — só em memória, vai no registerWithGoogle. */
+  registrationToken: string
+  expiresAt: string
+  /** E-mail verificado pelo Google — exibido bloqueado, não editável. */
+  email: string
+  /** Sugestão editável. */
+  username: string
+}
+
+export type GoogleAuthResponse =
+  | (LoginResponse & { status: 'authenticated' })
+  | GoogleRegistrationRequired
+
+export interface GoogleRegisterInput {
+  registrationToken: string
+  username: string
+}

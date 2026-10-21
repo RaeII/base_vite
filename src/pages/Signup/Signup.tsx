@@ -6,6 +6,8 @@ import { useAuth } from '../../hooks/useAuth'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { ThemeToggle } from '@/components/ThemeToggle'
+import { GoogleLoginButton } from '@/components/GoogleLoginButton'
+import type { GoogleRegistrationRequired } from '../../api/auth/auth.types'
 import {
   Card,
   CardContent,
@@ -59,11 +61,20 @@ function PasswordInput({
 }
 
 function Signup() {
-  const { isAuthenticated, signup } = useAuth()
+  const { isAuthenticated, signup, loginWithGoogle, registerWithGoogle } = useAuth()
   const navigate = useNavigate()
   const location = useLocation()
 
-  const [username, setUsername] = useState('')
+  // Rota de origem guardada pelo RequireAuth — volta para lá após cadastrar.
+  // `google`: 1º acesso pelo Google vindo do /login (só confirma o username).
+  const locationState = location.state as {
+    from?: { pathname: string }
+    google?: GoogleRegistrationRequired
+  } | null
+  const from = locationState?.from?.pathname ?? '/'
+
+  const [google, setGoogle] = useState(locationState?.google ?? null)
+  const [username, setUsername] = useState(locationState?.google?.username ?? '')
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [passwordConfirmation, setPasswordConfirmation] = useState('')
@@ -72,11 +83,8 @@ function Signup() {
   const [error, setError] = useState<string | null>(null)
   const [submitting, setSubmitting] = useState(false)
 
-  // Rota de origem guardada pelo RequireAuth — volta para lá após cadastrar.
-  const locationState = location.state as { from?: { pathname: string } } | null
-  const from = locationState?.from?.pathname ?? '/'
   const passwordsMismatch =
-    passwordConfirmation.length > 0 && password !== passwordConfirmation
+    !google && passwordConfirmation.length > 0 && password !== passwordConfirmation
   const formError = passwordsMismatch ? 'As senhas não conferem' : error
 
   if (isAuthenticated) {
@@ -86,23 +94,51 @@ function Signup() {
   async function handleSubmit(e: SyntheticEvent) {
     e.preventDefault()
     setError(null)
-    if (password !== passwordConfirmation) {
+    if (google && Date.now() >= new Date(google.expiresAt).getTime()) {
+      setGoogle(null)
+      setError('A verificação do Google expirou. Entre com o Google novamente.')
+      return
+    }
+    if (!google && password !== passwordConfirmation) {
       return
     }
 
     setSubmitting(true)
     try {
-      const trimmedEmail = email.trim()
-      await signup({
-        username: username.trim(),
-        email: trimmedEmail,
-        password,
-      })
+      if (google) {
+        await registerWithGoogle({
+          registrationToken: google.registrationToken,
+          username: username.trim(),
+        })
+      } else {
+        await signup({
+          username: username.trim(),
+          email: email.trim(),
+          password,
+        })
+      }
       navigate(from, { replace: true })
     } catch (err) {
       setError(
         err instanceof ApiError ? err.message : 'Erro inesperado ao criar conta'
       )
+    } finally {
+      setSubmitting(false)
+    }
+  }
+
+  // Conta já existia: entra (o <Navigate> acima redireciona). 1º acesso: confirma o username.
+  async function handleGoogle(credential: string) {
+    setError(null)
+    setSubmitting(true)
+    try {
+      const result = await loginWithGoogle(credential)
+      if (result.status === 'registration_required') {
+        setGoogle(result)
+        setUsername(result.username)
+      }
+    } catch (err) {
+      setError(err instanceof ApiError ? err.message : 'Erro ao entrar com o Google')
     } finally {
       setSubmitting(false)
     }
@@ -116,9 +152,12 @@ function Signup() {
       <Card className="w-full max-w-sm">
         <CardHeader>
           <CardTitle className="text-2xl tracking-tight">Criar conta</CardTitle>
-          <CardDescription>Cadastre seu username, email e senha.</CardDescription>
+          <CardDescription>
+            {google ? 'Confirme o username da sua conta Google.' : 'Cadastre seu username, email e senha.'}
+          </CardDescription>
         </CardHeader>
-        <CardContent>
+        <CardContent className="space-y-5">
+          {!google && <GoogleLoginButton onCredential={handleGoogle} disabled={submitting} />}
           <form onSubmit={handleSubmit} className="space-y-5">
             <Input
               id="username"
@@ -141,38 +180,43 @@ function Signup() {
               required
               maxLength={45}
               autoComplete="email"
-              value={email}
+              disabled={google !== null}
+              value={google ? google.email : email}
               onChange={(e) => setEmail(e.target.value)}
             />
 
-            <PasswordInput
-              id="password"
-              label="Senha"
-              required
-              minLength={8}
-              maxLength={72}
-              autoComplete="new-password"
-              value={password}
-              visible={passwordVisible}
-              onChange={(e) => setPassword(e.target.value)}
-              onToggleVisibility={() => setPasswordVisible((visible) => !visible)}
-            />
+            {!google && (
+              <>
+                <PasswordInput
+                  id="password"
+                  label="Senha"
+                  required
+                  minLength={8}
+                  maxLength={72}
+                  autoComplete="new-password"
+                  value={password}
+                  visible={passwordVisible}
+                  onChange={(e) => setPassword(e.target.value)}
+                  onToggleVisibility={() => setPasswordVisible((visible) => !visible)}
+                />
 
-            <PasswordInput
-              id="password-confirmation"
-              label="Confirmar senha"
-              required
-              minLength={8}
-              maxLength={72}
-              autoComplete="new-password"
-              value={passwordConfirmation}
-              visible={passwordConfirmationVisible}
-              aria-invalid={passwordsMismatch || undefined}
-              onChange={(e) => setPasswordConfirmation(e.target.value)}
-              onToggleVisibility={() =>
-                setPasswordConfirmationVisible((visible) => !visible)
-              }
-            />
+                <PasswordInput
+                  id="password-confirmation"
+                  label="Confirmar senha"
+                  required
+                  minLength={8}
+                  maxLength={72}
+                  autoComplete="new-password"
+                  value={passwordConfirmation}
+                  visible={passwordConfirmationVisible}
+                  aria-invalid={passwordsMismatch || undefined}
+                  onChange={(e) => setPasswordConfirmation(e.target.value)}
+                  onToggleVisibility={() =>
+                    setPasswordConfirmationVisible((visible) => !visible)
+                  }
+                />
+              </>
+            )}
 
             {formError && (
               <p role="alert" className="text-sm text-destructive">
@@ -188,16 +232,28 @@ function Signup() {
               {submitting ? 'Criando…' : 'Criar conta'}
             </Button>
 
-            <p className="text-center text-sm text-muted-foreground">
-              Já tem conta?{' '}
-              <Link
-                to="/login"
-                state={{ from: locationState?.from }}
-                className="font-medium text-primary underline-offset-4 hover:underline"
-              >
-                Entrar
-              </Link>
-            </p>
+            {google ? (
+              <p className="text-center text-sm text-muted-foreground">
+                <button
+                  type="button"
+                  onClick={() => setGoogle(null)}
+                  className="font-medium text-primary underline-offset-4 hover:underline"
+                >
+                  Cadastrar com senha
+                </button>
+              </p>
+            ) : (
+              <p className="text-center text-sm text-muted-foreground">
+                Já tem conta?{' '}
+                <Link
+                  to="/login"
+                  state={{ from: locationState?.from }}
+                  className="font-medium text-primary underline-offset-4 hover:underline"
+                >
+                  Entrar
+                </Link>
+              </p>
+            )}
           </form>
         </CardContent>
       </Card>

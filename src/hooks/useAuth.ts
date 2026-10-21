@@ -1,5 +1,10 @@
 import { createContext, useContext } from 'react'
-import type { LoginInput, SignupInput } from '../api/auth/auth.types'
+import type {
+  GoogleAuthResponse,
+  GoogleRegisterInput,
+  LoginInput,
+  SignupInput,
+} from '../api/auth/auth.types'
 import type { User } from '../api/user/user.types'
 
 export interface AuthContextValue {
@@ -15,6 +20,10 @@ export interface AuthContextValue {
   adminLogin: (input: LoginInput) => Promise<User>
   /** Cria conta no backend (seta os cookies httpOnly de sessão). */
   signup: (input: SignupInput) => Promise<User>
+  /** Login com Google (ID token do GIS); no 1º acesso devolve os dados a confirmar, sem criar conta. */
+  loginWithGoogle: (credential: string) => Promise<GoogleAuthResponse>
+  /** Conclui o 1º acesso pelo Google (cria conta sem senha e abre a sessão). */
+  registerWithGoogle: (input: GoogleRegisterInput) => Promise<User>
   /** Revoga a sessão no backend e limpa o estado local. */
   logout: () => Promise<void>
 }

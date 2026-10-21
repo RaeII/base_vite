@@ -14,6 +14,11 @@ Já autenticado → redireciona direto. Sessão que caiu sozinha
 (`useAuth().sessionExpired`) → a descrição do card vira "Sua sessão expirou.
 Entre novamente."
 
+**Google:** [[componentes/google-login-button|GoogleLoginButton]] no topo (só fora do
+modo admin) → `useAuth().loginWithGoogle`. Conta existente entra (o `<Navigate>`
+redireciona); 1º acesso (`registration_required`) vai para `/signup` com
+`state.google` para confirmar o username — nada é criado antes disso.
+
 **Modo admin (`admin`, rota `/admin/login`):** login da área administrativa
 (step-up). Usa `useAuth().adminLogin`; **não** redireciona quem já está logado
 (reautenticação obrigatória) e pré-preenche o username da sessão. Volta para
@@ -32,4 +37,5 @@ Nenhum.
 ## Componentes globais usados
 
 - [[componentes/auth-provider|AuthProvider]] — via [[funcoes/use-auth|useAuth]]
+- [[componentes/google-login-button|GoogleLoginButton]] — login com Google
 - `ApiError` (`src/api/client.ts`) — mensagem de erro do backend no form
