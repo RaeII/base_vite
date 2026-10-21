@@ -6,22 +6,24 @@
 
 ## O que faz
 
-Provider global de autenticação. Dono do estado da sessão: faz login/signup/logout
-na API, espelha `{ user, expiresAt }` em `localStorage` (chave `auth.session`)
-para sobreviver a reload, e derruba a sessão quando o interceptor do axios detecta
-401 (`SESSION_EXPIRED_EVENT`). Envolve as rotas no `App.tsx`.
+Provider global de autenticação. Dono do estado da sessão: faz login/login admin/signup/logout
+na API e busca o usuário em `GET /auth/me` — **o servidor é a fonte da verdade**,
+nada de sessão em `localStorage`. Derruba a sessão quando o interceptor do axios
+avisa que o refresh foi recusado (`SESSION_EXPIRED_EVENT`). Envolve as rotas no
+`App.tsx`.
 
 ## Props
 
 | Prop | Tipo | Obrigatória | Padrão | Descrição |
 |---|---|---|---|---|
 | `children` | `ReactNode` | sim | — | árvore da aplicação |
+| `fallback` | `ReactNode` | não | `null` | renderizado enquanto o `/auth/me` do boot não responde |
 
 ## Uso
 
 ```tsx
 <BrowserRouter>
-  <AuthProvider>
+  <AuthProvider fallback={<PageFallback />}>
     <Routes>…</Routes>
   </AuthProvider>
 </BrowserRouter>
@@ -31,7 +33,17 @@ Consumo nos componentes: [[funcoes/use-auth|useAuth]].
 
 ## Notas
 
-- Token JWT fica em cookie **httpOnly** — o JS nunca lê. `localStorage` guarda
-  só o espelho da sessão (usuário + validade) para UX; autenticação real é o cookie.
-- Sessão local expirada no boot → limpa e começa deslogado.
-- `logout()` limpa local mesmo se a request falhar (cookie expira sozinho).
+- Tokens ficam em cookies **httpOnly** (access JWT de 15 min + refresh rotativo
+  de 7 dias deslizantes) — o JS nunca lê. Access vencido é renovado em silêncio
+  pelo interceptor ([[funcoes/api|api]]); o usuário só é deslogado quando a
+  **sessão** acaba (refresh recusado: expirada, revogada ou reuso detectado).
+- **Boot:** renderiza `fallback` até o `/auth/me` responder — quem está logado
+  não vê o `/login` piscar.
+- **Revalidação** (`/auth/me`) sempre que a aba volta a ficar visível: pega
+  login/logout feito em outra aba, sessão revogada no servidor (troca de senha,
+  desativação) ou vencida por inatividade. Erro de rede **não** desloga.
+- Sessão que cai sozinha → `sessionExpired = true` (o Login avisa "Sua sessão
+  expirou"); visitante sem sessão não recebe o aviso. Logout explícito também não.
+- `logout()` revoga a sessão no backend e limpa o estado mesmo se a request falhar.
+- `adminLogin()` (`POST /auth/admin/login`) abre uma sessão **nova** que vale para
+  o app e para a área admin — o estado local é atualizado igual ao login.

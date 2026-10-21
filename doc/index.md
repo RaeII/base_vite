@@ -20,9 +20,13 @@ Leia **antes** de criar qualquer arquivo. São obrigatórias.
 Cada página tem sua própria pasta aqui e em `src/pages/`.
 
 - [[paginas/_template|Template de página]] — copie ao criar uma página
-- [[paginas/login/index|Login]] — `/login`, formulário de autenticação
+- [[paginas/login/index|Login]] — `/login` e `/admin/login` (modo admin, step-up)
 - [[paginas/signup/index|Signup]] — `/signup`, cadastro público de usuário
 - [[paginas/home/index|Home]] — `/`, showcase do tema (rota autenticada)
+- [[paginas/admin-dashboard/index|Admin · Visão geral]] — `/admin`, números, atividade recente, saúde
+- [[paginas/admin-users/index|Admin · Usuários]] — `/admin/users`, busca, filtros, criar/editar, desativar, encerrar sessões
+- [[paginas/admin-audit/index|Admin · Auditoria]] — `/admin/audit`, trilha de ações administrativas
+- [[paginas/admin-system/index|Admin · Sistema]] — `/admin/system`, saúde, runtime, banco, config de segurança
 
 ## 🧩 Componentes globais
 
@@ -34,6 +38,11 @@ Reutilizáveis em qualquer página. **Documentar é obrigatório** ([[02-compone
 - [[componentes/mobile-nav|MobileNav]] — navegação mobile (bottom bar + drawer lateral; `< md`)
 - [[componentes/auth-provider|AuthProvider]] — provider global de autenticação (sessão, login/logout)
 - [[componentes/require-auth|RequireAuth]] — guarda de rotas autenticadas
+- [[componentes/require-admin|RequireAdmin]] — guarda da área admin (sessão admin elevada)
+- [[componentes/admin-layout|AdminLayout]] — shell da área admin (sidebar/bottom bar com `adminNavItems`)
+- [[componentes/health-indicator|HealthIndicator]] — status do health check (ponto + rótulo)
+- [[componentes/pagination-bar|PaginationBar]] — rodapé de lista paginada
+- [[componentes/load-error|LoadError]] — erro de carregamento + "Tentar de novo"
 - [[componentes/theme-toggle|ThemeToggle]] — switch custom claro/escuro (ícones Lucide)
 
 ## ⚙️ Funções e hooks globais
@@ -41,6 +50,8 @@ Reutilizáveis em qualquer página. **Documentar é obrigatório** ([[02-compone
 - [[funcoes/_template|Template de função/hook]]
 - [[funcoes/api|api]] — cliente axios + rotas do backend (`src/api/`) — **toda request passa aqui**
 - [[funcoes/use-auth|useAuth]] — hook de autenticação (`src/hooks/useAuth.ts`)
+- [[funcoes/use-api-data|useApiData]] — busca dados da API com loading/erro/reload (`src/hooks/useApiData.ts`)
+- [[funcoes/format|format]] — datas, bytes, durações e rótulos de auditoria pt-BR (`src/lib/format.ts`)
 - `useTheme` — hook de tema claro/escuro (`src/hooks/useTheme.ts`)
 
 ---

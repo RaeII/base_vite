@@ -47,6 +47,9 @@
   --destructive: #b3261e;
   --destructive-foreground: #fafafa;
 
+  /* Estado positivo (saúde ok, conta ativa) — texto ≥ 4.5:1 sobre background/card. */
+  --success: #2f6f4f;
+
   --ring: #04283d;
 
   /* sidebar (shadcn) — aliases dos tokens da marca; fonte única de verdade. */
@@ -90,6 +93,8 @@
   --destructive: #e5544b;
   --destructive-foreground: #fafafa;
 
+  --success: #5fb38a;
+
   --ring: #f3ebd3;
 
   /* sidebar herda os mesmos aliases; os valores mudam via os tokens acima. */
@@ -128,6 +133,7 @@
   --color-accent-foreground: var(--accent-foreground);
   --color-destructive: var(--destructive);
   --color-destructive-foreground: var(--destructive-foreground);
+  --color-success: var(--success);
   --color-ring: var(--ring);
   --color-sidebar-ring: var(--sidebar-ring);
   --color-sidebar-border: var(--sidebar-border);

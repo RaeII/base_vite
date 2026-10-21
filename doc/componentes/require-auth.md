@@ -26,5 +26,9 @@ Nenhuma — usa [[funcoes/use-auth|useAuth]] internamente.
 ## Notas
 
 - Depende de estar dentro de [[componentes/auth-provider|AuthProvider]] e do router.
-- Novo grupo de permissão (ex: admin-only)? Crie guard irmão (ex: `RequireAdmin`
-  checando `isAdmin`) — não infle este.
+- Também é quem tira o usuário da tela quando a sessão cai (refresh recusado):
+  o AuthProvider zera o usuário e este guard redireciona, mantendo `state.from`.
+  Não precisa de estado de "carregando" — o AuthProvider só renderiza as rotas
+  depois que o `/auth/me` do boot responde.
+- Novo grupo de permissão? Crie guard irmão — não infle este. Exemplo:
+  [[componentes/require-admin|RequireAdmin]] (área admin).

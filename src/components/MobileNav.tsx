@@ -2,7 +2,7 @@ import { useState } from 'react'
 import { Command, LogOut, Menu, Palette } from 'lucide-react'
 import { NavLink, useLocation } from 'react-router-dom'
 import { useAuth } from '@/hooks/useAuth'
-import { MOBILE_PRIMARY_COUNT, navItems, type NavItem } from '@/lib/nav'
+import { MOBILE_PRIMARY_COUNT, navItems, visibleNavItems, type NavItem } from '@/lib/nav'
 import { cn } from '@/lib/utils'
 import { ThemeToggle } from '@/components/ThemeToggle'
 import { Avatar, AvatarFallback } from '@/components/ui/avatar'
@@ -68,7 +68,15 @@ function NavTab({ item }: { item: NavItem }) {
 }
 
 // Drawer "Menu": nav completa + conta (tema, sair). Abre da esquerda → direita.
-function MoreSheet({ open, onOpenChange }: { open: boolean; onOpenChange: (v: boolean) => void }) {
+function MoreSheet({
+  items,
+  open,
+  onOpenChange,
+}: {
+  items: NavItem[]
+  open: boolean
+  onOpenChange: (v: boolean) => void
+}) {
   const { user, logout } = useAuth()
   const { pathname } = useLocation()
   const name = user?.username ?? '—'
@@ -87,7 +95,7 @@ function MoreSheet({ open, onOpenChange }: { open: boolean; onOpenChange: (v: bo
         </SheetHeader>
 
         <nav className="flex-1 overflow-auto p-2">
-          {navItems.map((item) => {
+          {items.map((item) => {
             const Icon = item.icon
             const content = (
               <>
@@ -150,9 +158,12 @@ function MoreSheet({ open, onOpenChange }: { open: boolean; onOpenChange: (v: bo
 }
 
 // Navegação mobile: bottom bar fixa (só < md). Últ. slot abre o drawer com o menu completo.
-export function MobileNav() {
+// `items` default = navegação principal; a área admin passa `adminNavItems`.
+export function MobileNav({ items = navItems }: { items?: NavItem[] }) {
+  const { isAdmin } = useAuth()
   const [open, setOpen] = useState(false)
-  const primary = navItems.slice(0, MOBILE_PRIMARY_COUNT)
+  const visible = visibleNavItems(items, isAdmin)
+  const primary = visible.slice(0, MOBILE_PRIMARY_COUNT)
 
   return (
     <>
@@ -176,7 +187,7 @@ export function MobileNav() {
         </button>
       </nav>
 
-      <MoreSheet open={open} onOpenChange={setOpen} />
+      <MoreSheet items={visible} open={open} onOpenChange={setOpen} />
     </>
   )
 }

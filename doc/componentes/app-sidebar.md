@@ -5,14 +5,14 @@ Sidebar do app (shell de navegação), montada sobre o primitivo [[componentes/s
 O respiro é o padrão do shadcn (`8px`, via `p-2`/`m-2` no primitivo). Para mais ar, suba esses valores em `src/components/ui/sidebar.tsx`.
 
 - **Local:** `src/components/AppSidebar.tsx` (global).
-- **Props:** nenhuma — lê usuário/logout de [[funcoes/use-auth|useAuth]].
+- **Props:** `items?: NavItem[]` (default `navItems`) · `subtitle?: string` (default `"Projeto"`; área admin passa `adminNavItems` + `"Administração"`). Lê usuário/`isAdmin`/logout de [[funcoes/use-auth|useAuth]].
 - **Depende de:** `ui/sidebar`, `ui/dropdown-menu`, `ui/avatar`, [[componentes/theme-toggle|ThemeToggle]], [[funcoes/use-auth|useAuth]].
 - **Precisa de `<SidebarProvider>` acima** (e do `useAuth`/AuthProvider). Renderize ao lado de `<SidebarInset>`.
 
 ## Layout
 
 - **Topo (`SidebarHeader`):** ícone + nome do projeto (`base_vite`, estático) + **único** botão de toggle (`SidebarTrigger`), sempre **abaixo** da logo (mesma altura nos dois estados). Aberto → `<` alinhado à direita (nome visível). Recolhido → `>` centrado (nome some). Sem `SidebarRail` (barra da borda removida).
-- **Meio (`SidebarContent`):** menus de `navItems` (fonte única em `src/lib/nav.ts`, compartilhada com [[componentes/mobile-nav|MobileNav]]). Placeholders sem rota — dar `to` no `nav.ts` quando a página existir.
+- **Meio (`SidebarContent`):** menus de `items` (fonte única em `src/lib/nav.ts`, compartilhada com [[componentes/mobile-nav|MobileNav]]). Item com `to` vira `NavLink` (ativo = rota exata); sem `to` = placeholder. Item `adminOnly` só aparece para `isAdmin` (atalho de UI — "Administração" leva ao login admin).
 - **Rodapé (`SidebarFooter`):** avatar + nome/e-mail do usuário; clique abre dropdown com **Tema** (o [[componentes/theme-toggle|ThemeToggle]], linha que não fecha o menu) e **Sair** (`logout`).
 
 ## Cores

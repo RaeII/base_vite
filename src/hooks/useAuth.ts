@@ -7,11 +7,15 @@ export interface AuthContextValue {
   user: User | null
   isAuthenticated: boolean
   isAdmin: boolean
-  /** Autentica no backend (seta o cookie httpOnly) e persiste a sessão local. */
+  /** true quando a sessão caiu sozinha (expirou/revogada), não por logout. */
+  sessionExpired: boolean
+  /** Autentica no backend (seta os cookies httpOnly de sessão). */
   login: (input: LoginInput) => Promise<User>
-  /** Cria conta no backend (seta o cookie httpOnly) e persiste a sessão local. */
+  /** Login da área admin: reautentica e abre sessão elevada (15 min sem uso). */
+  adminLogin: (input: LoginInput) => Promise<User>
+  /** Cria conta no backend (seta os cookies httpOnly de sessão). */
   signup: (input: SignupInput) => Promise<User>
-  /** Remove o cookie no backend e limpa a sessão local. */
+  /** Revoga a sessão no backend e limpa o estado local. */
   logout: () => Promise<void>
 }
 

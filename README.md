@@ -1,5 +1,5 @@
 ```bash
-PROJECT=ratiou
+PROJECT=licis
 
 git clone git@github.com:RaeII/base_vite.git "$PROJECT"
 cd "$PROJECT" || exit 1
@@ -11,7 +11,9 @@ git add .
 git commit -m "feat: init"
 
 # Criar o repositório no GitHub usando o mesmo nome da pasta atual
-gh repo create "$(basename "$PWD")" --private --source=. --push
+# gh repo create "$(basename "$PWD")" --private --source=. --push
+
+gh repo create "monkey-branch/$(basename "$PWD")" --private --source=. --push
 
 # Instalar dependências
 bun install

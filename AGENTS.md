@@ -28,6 +28,7 @@ Sem suíte de testes configurada. Validação = `bun run build` (typecheck via `
 - Entrada: `src/main.tsx` → `App.tsx` (router + `AuthProvider` + `Suspense`; páginas lazy).
 - **API** (`src/api/`): instância axios única em `client.ts` (`baseURL: '/api'`, `withCredentials`, erros normalizados em `ApiError`); rotas por módulo em `src/api/<modulo>/` (`*.routes.ts` + `*.types.ts`). Nunca chame axios/fetch fora dessa pasta. Dev: proxy do Vite encaminha `/api` ao backend (`VITE_API_URL`, default `http://localhost:3000`).
 - **Auth**: JWT em cookie httpOnly (`token_access`) — JS nunca lê o token. `AuthProvider` (`src/components/`) espelha a sessão em `localStorage` e escuta `SESSION_EXPIRED_EVENT` (401 do interceptor); `useAuth` (`src/hooks/`) expõe `user/login/logout`; `RequireAuth` protege rotas filhas. Docs: `doc/funcoes/api.md`, `doc/funcoes/use-auth.md`.
+- **Área admin** (`/admin/*`): login próprio em `/admin/login` (`<Login admin />` → `adminLogin`, step-up: sessão admin elevada que expira sem uso). `RequireAdmin` confirma em `GET /admin/me` e volta ao login admin em qualquer 403 (`FORBIDDEN_EVENT`); `AdminLayout` reusa `AppSidebar`/`MobileNav` com `adminNavItems`. `isAdmin` é só UI — quem autoriza é o backend. Docs: `doc/componentes/require-admin.md`.
 
 ## Regras do projeto (OBRIGATÓRIAS)
 

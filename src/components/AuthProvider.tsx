@@ -1,61 +1,82 @@
 import { useCallback, useEffect, useMemo, useState, type ReactNode } from 'react'
-import { login as apiLogin, logout as apiLogout, signup as apiSignup } from '../api/auth/auth.routes'
+import {
+  adminLogin as apiAdminLogin,
+  login as apiLogin,
+  logout as apiLogout,
+  me as apiMe,
+  signup as apiSignup,
+} from '../api/auth/auth.routes'
 import type { LoginInput, SignupInput } from '../api/auth/auth.types'
 import { SESSION_EXPIRED_EVENT } from '../api/client'
 import type { User } from '../api/user/user.types'
 import { AuthContext } from '../hooks/useAuth'
 
 /**
- * O token JWT vive num cookie httpOnly — o JS não consegue lê-lo.
- * O que persiste aqui é só o "espelho" da sessão (usuário + validade),
- * para a UI sobreviver a reload. A autenticação real é sempre o cookie:
- * se ele expirar/for revogado, a API responde 401 e a sessão local cai.
+ * Sessão = dois cookies httpOnly que o JS nunca lê: access token (JWT curto) e
+ * refresh token rotativo. O servidor é a fonte da verdade: o usuário vem de
+ * GET /auth/me no boot e sempre que a aba volta a ficar visível. Access vencido
+ * é renovado em silêncio pelo interceptor (src/api/client.ts); se o refresh é
+ * recusado, SESSION_EXPIRED_EVENT derruba a sessão e o RequireAuth leva ao login.
  */
-const STORAGE_KEY = 'auth.session'
-
-interface StoredSession {
-  user: User
-  /** epoch ms — espelho do expiresIn retornado no login */
-  expiresAt: number
+interface SessionState {
+  user: User | null
+  expired: boolean
 }
 
-function loadSession(): User | null {
-  try {
-    const raw = localStorage.getItem(STORAGE_KEY)
-    if (!raw) return null
-    const session = JSON.parse(raw) as StoredSession
-    if (!session?.user || Date.now() >= session.expiresAt) {
-      localStorage.removeItem(STORAGE_KEY)
-      return null
+const LOGGED_OUT: SessionState = { user: null, expired: false }
+
+interface AuthProviderProps {
+  children: ReactNode
+  /** Renderizado enquanto o servidor confirma a sessão no boot. */
+  fallback?: ReactNode
+}
+
+export function AuthProvider({ children, fallback = null }: AuthProviderProps) {
+  const [session, setSession] = useState<SessionState>(LOGGED_OUT)
+  const [checking, setChecking] = useState(true)
+
+  // Boot + aba voltando a ficar visível: pega login/logout feito em outra aba,
+  // sessão revogada no servidor (troca de senha, desativação) ou vencida.
+  useEffect(() => {
+    // 401 já é tratado pelo interceptor (refresh ou SESSION_EXPIRED_EVENT);
+    // erro de rede mantém o estado atual em vez de deslogar por oscilação.
+    const revalidate = () =>
+      apiMe()
+        .then((user) => setSession({ user, expired: false }))
+        .catch(() => {})
+        .finally(() => setChecking(false))
+
+    void revalidate()
+    const onVisible = () => {
+      if (document.visibilityState === 'visible') void revalidate()
     }
-    return session.user
-  } catch {
-    localStorage.removeItem(STORAGE_KEY)
-    return null
-  }
-}
+    document.addEventListener('visibilitychange', onVisible)
+    return () => document.removeEventListener('visibilitychange', onVisible)
+  }, [])
 
-function saveSession(user: User, expiresIn: number) {
-  localStorage.setItem(
-    STORAGE_KEY,
-    JSON.stringify({ user, expiresAt: Date.now() + expiresIn * 1000 }),
-  )
-}
-
-export function AuthProvider({ children }: { children: ReactNode }) {
-  const [user, setUser] = useState<User | null>(loadSession)
+  // Refresh recusado. Só marca "expirada" se havia usuário (visitante não vê aviso).
+  useEffect(() => {
+    const onExpired = () => setSession((s) => (s.user ? { user: null, expired: true } : s))
+    window.addEventListener(SESSION_EXPIRED_EVENT, onExpired)
+    return () => window.removeEventListener(SESSION_EXPIRED_EVENT, onExpired)
+  }, [])
 
   const login = useCallback(async (input: LoginInput) => {
-    const { data: loggedUser, expiresIn } = await apiLogin(input)
-    saveSession(loggedUser, expiresIn)
-    setUser(loggedUser)
+    const { data: loggedUser } = await apiLogin(input)
+    setSession({ user: loggedUser, expired: false })
     return loggedUser
   }, [])
 
+  // Login admin abre uma sessão nova (também de usuário): o estado local segue o mesmo.
+  const adminLogin = useCallback(async (input: LoginInput) => {
+    const { data: adminUser } = await apiAdminLogin(input)
+    setSession({ user: adminUser, expired: false })
+    return adminUser
+  }, [])
+
   const signup = useCallback(async (input: SignupInput) => {
-    const { data: createdUser, expiresIn } = await apiSignup(input)
-    saveSession(createdUser, expiresIn)
-    setUser(createdUser)
+    const { data: createdUser } = await apiSignup(input)
+    setSession({ user: createdUser, expired: false })
     return createdUser
   }, [])
 
@@ -63,33 +84,27 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     try {
       await apiLogout()
     } finally {
-      // Limpa local mesmo se a request falhar — o cookie expira sozinho.
-      localStorage.removeItem(STORAGE_KEY)
-      setUser(null)
+      // Limpa local mesmo se a request falhar — a sessão expira sozinha no servidor.
+      setSession(LOGGED_OUT)
     }
-  }, [])
-
-  // Interceptor do axios detectou 401 → cookie inválido/expirado.
-  useEffect(() => {
-    const clearSession = () => {
-      localStorage.removeItem(STORAGE_KEY)
-      setUser(null)
-    }
-    window.addEventListener(SESSION_EXPIRED_EVENT, clearSession)
-    return () => window.removeEventListener(SESSION_EXPIRED_EVENT, clearSession)
   }, [])
 
   const value = useMemo(
     () => ({
-      user,
-      isAuthenticated: user !== null,
-      isAdmin: user?.is_admin ?? false,
+      user: session.user,
+      isAuthenticated: session.user !== null,
+      isAdmin: session.user?.is_admin ?? false,
+      sessionExpired: session.expired,
       login,
+      adminLogin,
       signup,
       logout,
     }),
-    [user, login, signup, logout],
+    [session, login, adminLogin, signup, logout],
   )
+
+  // Sem isso, quem está logado veria o /login piscar até o /auth/me responder.
+  if (checking) return fallback
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>
 }

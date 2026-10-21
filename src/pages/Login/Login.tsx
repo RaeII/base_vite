@@ -1,3 +1,4 @@
+import { ShieldCheck } from 'lucide-react'
 import { useState, type SyntheticEvent } from 'react'
 import { Link, Navigate, useLocation, useNavigate } from 'react-router-dom'
 import { ApiError } from '../../api/client'
@@ -13,21 +14,30 @@ import {
   CardTitle,
 } from '@/components/ui/card'
 
-function Login() {
-  const { isAuthenticated, login } = useAuth()
+interface LoginProps {
+  /**
+   * Modo área admin (`/admin/login`): reautenticação obrigatória mesmo já logado
+   * (step-up) — abre uma sessão admin elevada e volta para a área admin.
+   */
+  admin?: boolean
+}
+
+function Login({ admin = false }: LoginProps) {
+  const { user, isAuthenticated, sessionExpired, login, adminLogin } = useAuth()
   const navigate = useNavigate()
   const location = useLocation()
 
-  const [identifier, setIdentifier] = useState('')
+  // Admin já logado só confirma a senha: o identificador vem preenchido.
+  const [identifier, setIdentifier] = useState(admin ? (user?.username ?? '') : '')
   const [password, setPassword] = useState('')
   const [error, setError] = useState<string | null>(null)
   const [submitting, setSubmitting] = useState(false)
 
   // Rota de origem guardada pelo RequireAuth — volta para lá após logar.
   const locationState = location.state as { from?: { pathname: string } } | null
-  const from = locationState?.from?.pathname ?? '/'
+  const from = locationState?.from?.pathname ?? (admin ? '/admin' : '/')
 
-  if (isAuthenticated) {
+  if (isAuthenticated && !admin) {
     return <Navigate to={from} replace />
   }
 
@@ -36,7 +46,7 @@ function Login() {
     setError(null)
     setSubmitting(true)
     try {
-      await login({ login: identifier, password })
+      await (admin ? adminLogin : login)({ login: identifier, password })
       navigate(from, { replace: true })
     } catch (err) {
       setError(err instanceof ApiError ? err.message : 'Erro inesperado ao entrar')
@@ -52,8 +62,19 @@ function Login() {
       </div>
       <Card className="w-full max-w-sm">
         <CardHeader>
-          <CardTitle className="text-2xl tracking-tight">Entrar</CardTitle>
-          <CardDescription>Use seu username ou email.</CardDescription>
+          {admin && (
+            <div className="mb-2 flex size-10 items-center justify-center rounded-lg bg-primary text-accent dark:bg-secondary dark:ring-1 dark:ring-border">
+              <ShieldCheck className="size-5" aria-hidden />
+            </div>
+          )}
+          <CardTitle className="text-2xl tracking-tight">{admin ? 'Área administrativa' : 'Entrar'}</CardTitle>
+          <CardDescription>
+            {admin
+              ? 'Acesso restrito. Confirme suas credenciais de administrador para continuar.'
+              : sessionExpired
+                ? 'Sua sessão expirou. Entre novamente.'
+                : 'Use seu username ou email.'}
+          </CardDescription>
         </CardHeader>
         <CardContent>
           <form onSubmit={handleSubmit} className="space-y-5">
@@ -75,6 +96,7 @@ function Login() {
               type="password"
               required
               autoComplete="current-password"
+              autoFocus={admin && identifier !== ''}
               value={password}
               onChange={(e) => setPassword(e.target.value)}
             />
@@ -86,19 +108,28 @@ function Login() {
             )}
 
             <Button type="submit" disabled={submitting} className="w-full">
-              {submitting ? 'Entrando…' : 'Entrar'}
+              {submitting ? 'Entrando…' : admin ? 'Entrar na área admin' : 'Entrar'}
             </Button>
 
-            <p className="text-center text-sm text-muted-foreground">
-              Não tem conta?{' '}
-              <Link
-                to="/signup"
-                state={{ from: locationState?.from }}
-                className="font-medium text-primary underline-offset-4 hover:underline"
-              >
-                Criar conta
-              </Link>
-            </p>
+            {admin ? (
+              <div className="space-y-3 text-center text-sm text-muted-foreground">
+                <p className="text-xs">Por segurança, a sessão de administrador expira após um curto período sem uso.</p>
+                <Link to="/" className="font-medium text-primary underline-offset-4 hover:underline">
+                  Voltar ao sistema
+                </Link>
+              </div>
+            ) : (
+              <p className="text-center text-sm text-muted-foreground">
+                Não tem conta?{' '}
+                <Link
+                  to="/signup"
+                  state={{ from: locationState?.from }}
+                  className="font-medium text-primary underline-offset-4 hover:underline"
+                >
+                  Criar conta
+                </Link>
+              </p>
+            )}
           </form>
         </CardContent>
       </Card>

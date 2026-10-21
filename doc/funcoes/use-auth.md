@@ -22,10 +22,12 @@ function useAuth(): AuthContextValue
 |---|---|---|
 | `user` | `User \| null` | usuário logado (null sem sessão) |
 | `isAuthenticated` | `boolean` | `user !== null` |
-| `isAdmin` | `boolean` | `user.is_admin` |
-| `login` | `(input: LoginInput) => Promise<User>` | autentica e persiste sessão |
-| `signup` | `(input: SignupInput) => Promise<User>` | cadastra usuário comum e persiste sessão |
-| `logout` | `() => Promise<void>` | encerra sessão (backend + local) |
+| `isAdmin` | `boolean` | `user.is_admin` — só para UI (mostrar menu); quem autoriza é o backend |
+| `sessionExpired` | `boolean` | sessão caiu sozinha (expirou/revogada), não por logout |
+| `login` | `(input: LoginInput) => Promise<User>` | autentica (backend seta os cookies de sessão) |
+| `adminLogin` | `(input: LoginInput) => Promise<User>` | login da área admin: reautentica e abre sessão elevada (não-admin → 401) |
+| `signup` | `(input: SignupInput) => Promise<User>` | cadastra usuário comum e abre sessão |
+| `logout` | `() => Promise<void>` | revoga a sessão no backend e limpa o estado |
 
 ## Uso
 

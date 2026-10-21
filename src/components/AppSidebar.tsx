@@ -1,5 +1,6 @@
 import { ChevronsUpDown, Command, LogOut, Palette } from 'lucide-react'
-import { navItems } from '@/lib/nav'
+import { NavLink, useLocation } from 'react-router-dom'
+import { navItems, visibleNavItems, type NavItem } from '@/lib/nav'
 import { useAuth } from '@/hooks/useAuth'
 import { ThemeToggle } from '@/components/ThemeToggle'
 import { Avatar, AvatarFallback } from '@/components/ui/avatar'
@@ -28,9 +29,17 @@ function initials(name: string) {
   return name.slice(0, 2).toUpperCase()
 }
 
-export function AppSidebar() {
-  const { user, logout } = useAuth()
+interface AppSidebarProps {
+  /** Menus do meio. Default: navegação principal (`navItems`). */
+  items?: NavItem[]
+  /** Linha abaixo do nome do projeto (ex.: "Administração" na área admin). */
+  subtitle?: string
+}
+
+export function AppSidebar({ items = navItems, subtitle = 'Projeto' }: AppSidebarProps) {
+  const { user, isAdmin, logout } = useAuth()
   const { isMobile } = useSidebar()
+  const { pathname } = useLocation()
   const name = user?.username ?? '—'
 
   return (
@@ -46,7 +55,7 @@ export function AppSidebar() {
               </div>
               <div className="grid flex-1 text-left leading-tight group-data-[collapsible=icon]:hidden">
                 <span className="truncate font-semibold">base_vite</span>
-                <span className="truncate text-xs text-muted-foreground">Projeto</span>
+                <span className="truncate text-xs text-muted-foreground">{subtitle}</span>
               </div>
             </div>
             {/* Linha do trigger: "Menu" à esquerda (aberto), botão à direita; texto some ao recolher. */}
@@ -63,12 +72,21 @@ export function AppSidebar() {
       <SidebarContent>
         <SidebarGroup>
           <SidebarMenu>
-            {navItems.map((item) => (
+            {visibleNavItems(items, isAdmin).map((item) => (
               <SidebarMenuItem key={item.title}>
-                <SidebarMenuButton tooltip={item.title}>
-                  <item.icon />
-                  <span>{item.title}</span>
-                </SidebarMenuButton>
+                {item.to ? (
+                  <SidebarMenuButton asChild tooltip={item.title} isActive={pathname === item.to}>
+                    <NavLink to={item.to} end>
+                      <item.icon />
+                      <span>{item.title}</span>
+                    </NavLink>
+                  </SidebarMenuButton>
+                ) : (
+                  <SidebarMenuButton tooltip={item.title}>
+                    <item.icon />
+                    <span>{item.title}</span>
+                  </SidebarMenuButton>
+                )}
               </SidebarMenuItem>
             ))}
           </SidebarMenu>

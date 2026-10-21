@@ -57,11 +57,22 @@ Já mapeados em `src/index.css` para a marca:
 | `--input` | cor da `--border` |
 | `--radius` | `0.5rem` (deriva sm/md/lg/xl em `@theme inline`) |
 
-`--chart-*` e `--sidebar-*` **não** existem ainda — adicione no `:root`/`.dark`
-+ `@theme inline` **quando** usar `chart`/`sidebar` (o CLI avisa se faltar).
+`--sidebar-*` são aliases dos tokens da marca. `--chart-*` **não** existe ainda —
+adicione no `:root`/`.dark` + `@theme inline` **quando** usar `chart`.
+
+Token extra da marca: `--success` (`text-success`/`bg-success`) — estado positivo
+(saúde ok, conta ativa), contraste ≥ 4.5:1 nos dois temas.
+
+Primitivos instalados: avatar, alert-dialog, badge, button, card, dropdown-menu,
+input (customizado: label flutuante), label, separator, sheet, sidebar, skeleton,
+switch, table, tabs, tooltip.
 
 ## Notas
 
 - Lint: `src/components/ui/**` desliga `react-refresh/only-export-components`
   (primitivos exportam componente + `xxxVariants` de propósito) — `eslint.config.js`.
 - Regra de ouro: **antes de compor, procure** se o primitivo/composto já existe.
+- ⚠️ CLI pode gerar `import { cn } from "cn"` e instalar o pacote npm `cn` →
+  troque por `@/lib/utils` e `bun remove cn`. Responda **N** ao prompt de
+  sobrescrever `button.tsx`/`input.tsx` (são customizados).
+- `Skeleton` usa `bg-accent` (dourado) — em listas passe `className="bg-muted"`.

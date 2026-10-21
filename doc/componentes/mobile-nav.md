@@ -3,7 +3,7 @@
 Navegação mobile: **bottom bar** fixa (padrão tab bar de app) + **drawer lateral** para o overflow. Só aparece em `< md`; no desktop quem navega é a [[componentes/app-sidebar|AppSidebar]]. Complementar à sidebar — os dois leem a **mesma** fonte de menus (`src/lib/nav.ts`), sem duplicar.
 
 - **Local:** `src/components/MobileNav.tsx` (global).
-- **Props:** nenhuma — lê menus de `src/lib/nav.ts`, usuário/logout de [[funcoes/use-auth|useAuth]].
+- **Props:** `items?: NavItem[]` (default `navItems`; área admin passa `adminNavItems`). Usuário/`isAdmin`/logout de [[funcoes/use-auth|useAuth]].
 - **Depende de:** `ui/sheet`, `ui/avatar`, [[componentes/theme-toggle|ThemeToggle]], [[funcoes/use-auth|useAuth]], `react-router-dom` (`NavLink`).
 - **Precisa de Router acima** (usa `NavLink`/`useLocation`) e do `AuthProvider`. Renderize dentro de `<SidebarInset>` (ex.: `src/pages/Home/Home.tsx`).
 
@@ -14,7 +14,7 @@ Navegação mobile: **bottom bar** fixa (padrão tab bar de app) + **drawer late
 
 ## Fonte de menus (`src/lib/nav.ts`)
 
-`navItems[]` é a **fonte única** (sidebar + mobile). Item sem `to` = placeholder inerte; ao criar a página real, dê `to` → navega e marca ativo nos dois. Bar mostra `slice(0, MOBILE_PRIMARY_COUNT)`; o resto fica só no drawer.
+`navItems[]` (app) e `adminNavItems[]` (área admin) são a **fonte única** (sidebar + mobile). Item sem `to` = placeholder inerte; ao criar a página real, dê `to` → navega e marca ativo nos dois. `adminOnly: true` esconde de não-admin (`visibleNavItems`). Bar mostra `slice(0, MOBILE_PRIMARY_COUNT)`; o resto fica só no drawer.
 
 ## Por que não reusar a sidebar-como-drawer
 

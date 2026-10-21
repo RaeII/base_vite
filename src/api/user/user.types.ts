@@ -20,6 +20,17 @@ export interface CreateUserInput {
 
 export type UpdateUserInput = Partial<CreateUserInput>
 
+export type UserStatus = 'active' | 'inactive' | 'all'
+
+export interface ListUsersParams {
+  page?: number
+  limit?: number
+  /** Busca parcial em username/email. */
+  search?: string
+  /** Default do backend: `active`. */
+  status?: UserStatus
+}
+
 export interface PaginationMeta {
   page: number
   limit: number

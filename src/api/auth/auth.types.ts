@@ -17,7 +17,7 @@ export interface SignupInput {
 
 export interface LoginResponse {
   data: User
-  /** TTL da sessão em segundos (o token em si fica no cookie httpOnly). */
+  /** TTL do access token em segundos — renovado em silêncio pelo refresh token. */
   expiresIn: number
 }
 
