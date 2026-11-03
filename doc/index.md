@@ -23,10 +23,10 @@ Cada página tem sua própria pasta aqui e em `src/pages/`.
 - [[paginas/login/index|Login]] — `/login` e `/admin/login` (modo admin, step-up) · login com Google
 - [[paginas/signup/index|Signup]] — `/signup`, cadastro público de usuário · 1º acesso pelo Google
 - [[paginas/home/index|Home]] — `/`, showcase do tema (rota autenticada)
-- [[paginas/admin-dashboard/index|Admin · Visão geral]] — `/admin`, números, atividade recente, saúde
-- [[paginas/admin-users/index|Admin · Usuários]] — `/admin/users`, busca, filtros, criar/editar, desativar, encerrar sessões
-- [[paginas/admin-audit/index|Admin · Auditoria]] — `/admin/audit`, trilha de ações administrativas
-- [[paginas/admin-system/index|Admin · Sistema]] — `/admin/system`, saúde, runtime, banco, config de segurança
+- [[paginas/admin/dashboard/index|Admin · Visão geral]] — `/admin`, números, atividade recente, saúde
+- [[paginas/admin/users/index|Admin · Usuários]] — `/admin/users`, busca, filtros, criar/editar, desativar, encerrar sessões
+- [[paginas/admin/audit/index|Admin · Auditoria]] — `/admin/audit`, trilha de ações administrativas
+- [[paginas/admin/system/index|Admin · Sistema]] — `/admin/system`, saúde, runtime, banco, config de segurança
 
 ## 🧩 Componentes globais
 

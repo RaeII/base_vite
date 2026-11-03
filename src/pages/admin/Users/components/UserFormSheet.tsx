@@ -1,7 +1,7 @@
 import { useState, type ReactNode, type SyntheticEvent } from 'react'
-import { ApiError } from '../../../api/client'
-import { createUser, updateUser } from '../../../api/user/user.routes'
-import type { UpdateUserInput, User } from '../../../api/user/user.types'
+import { ApiError } from '../../../../api/client'
+import { createUser, updateUser } from '../../../../api/user/user.routes'
+import type { UpdateUserInput, User } from '../../../../api/user/user.types'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import {

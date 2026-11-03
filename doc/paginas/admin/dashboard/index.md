@@ -3,7 +3,7 @@
 [[index|← Índice]]
 
 **Rota:** `/admin` (dentro de [[componentes/require-admin|RequireAdmin]] + [[componentes/admin-layout|AdminLayout]])
-**Pasta:** `src/pages/AdminDashboard/`
+**Pasta:** `src/pages/admin/Dashboard/`
 **Carregamento:** lazy ([[04-performance]])
 
 ## O que faz
@@ -14,8 +14,8 @@ Painel inicial da área admin: faixa de números (`GET /admin/stats` — ativos,
 
 | Componente | Arquivo | O que faz |
 |---|---|---|
-| `Stat` | inline em `AdminDashboard.tsx` | célula da faixa de números (`dt`/`dd`) |
-| `SectionHeader` | inline em `AdminDashboard.tsx` | título de seção + link "ver mais" |
+| `Stat` | inline em `Dashboard.tsx` | célula da faixa de números (`dt`/`dd`) |
+| `SectionHeader` | inline em `Dashboard.tsx` | título de seção + link "ver mais" |
 
 ## Hooks/funções exclusivos
 

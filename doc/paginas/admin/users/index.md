@@ -3,7 +3,7 @@
 [[index|← Índice]]
 
 **Rota:** `/admin/users` (dentro de [[componentes/require-admin|RequireAdmin]] + [[componentes/admin-layout|AdminLayout]])
-**Pasta:** `src/pages/AdminUsers/`
+**Pasta:** `src/pages/admin/Users/`
 **Carregamento:** lazy ([[04-performance]])
 
 ## O que faz
@@ -19,7 +19,7 @@ Gestão de usuários sobre `/api/user`: busca (debounce 300 ms, volta à página
 | Componente | Arquivo | O que faz |
 |---|---|---|
 | `UserFormSheet` | `components/UserFormSheet.tsx` | criar/editar em `Sheet`; edição envia só campos alterados; senha vazia = mantém; mostra `issues` do Zod. Remonte com `key` a cada abertura |
-| `StatusLabel` | inline em `AdminUsers.tsx` | ponto + Ativo/Inativo |
+| `StatusLabel` | inline em `Users.tsx` | ponto + Ativo/Inativo |
 
 ## Hooks/funções exclusivos
 

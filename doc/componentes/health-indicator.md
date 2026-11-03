@@ -21,4 +21,4 @@ Status do health check como ponto + rótulo: `ok` → Operacional (`success`), `
 <HealthIndicator status={info.health.status} />
 ```
 
-Usado em [[paginas/admin-dashboard/index|Visão geral]] e [[paginas/admin-system/index|Sistema]].
+Usado em [[paginas/admin/dashboard/index|Visão geral]] e [[paginas/admin/system/index|Sistema]].

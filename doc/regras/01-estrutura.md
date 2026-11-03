@@ -17,6 +17,8 @@ src/
       components/        # componentes EXCLUSIVOS da página
       hooks/             # hooks exclusivos da página      (opcional)
       utils.ts           # funções exclusivas da página     (opcional)
+    admin/
+      <Pagina>/          # páginas da área admin (/admin/*), mesma estrutura
   components/            # componentes GLOBAIS (2+ páginas)
   hooks/                 # hooks GLOBAIS (ex: useTheme)
   lib/                   # funções puras GLOBAIS
@@ -32,6 +34,8 @@ src/
 3. **Função exclusiva → fica na página.** Reutilizável → `src/lib/` ([[03-funcoes]]).
 4. **Sem barrel files** (`index.ts` que reexporta tudo). Quebram tree-shaking
    e HMR — importe direto do arquivo. Ver [[04-performance]].
+5. **Página da área admin → `src/pages/admin/<Pagina>/`**, sem repetir o
+   prefixo (`admin/Users/`, não `admin/AdminUsers/`). Doc em `doc/paginas/admin/<pagina>/`.
 
 > Promover (local → global) é o movimento normal. Na segunda página que
 > precisa do mesmo código, mova-o e documente. Não copie.
@@ -51,6 +55,8 @@ doc/
     <pagina>/            # uma pasta por página
       index.md
       components/         # doc dos componentes exclusivos da página
+    admin/
+      <pagina>/          # páginas da área admin
   componentes/           # doc dos componentes globais
   funcoes/               # doc dos hooks/funções globais
 ```

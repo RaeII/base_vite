@@ -3,7 +3,7 @@
 [[index|← Índice]]
 
 **Rota:** `/admin/audit` (dentro de [[componentes/require-admin|RequireAdmin]] + [[componentes/admin-layout|AdminLayout]])
-**Pasta:** `src/pages/AdminAudit/`
+**Pasta:** `src/pages/admin/Audit/`
 **Carregamento:** lazy ([[04-performance]])
 
 ## O que faz

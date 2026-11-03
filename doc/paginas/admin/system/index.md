@@ -3,7 +3,7 @@
 [[index|← Índice]]
 
 **Rota:** `/admin/system` (dentro de [[componentes/require-admin|RequireAdmin]] + [[componentes/admin-layout|AdminLayout]])
-**Pasta:** `src/pages/AdminSystem/`
+**Pasta:** `src/pages/admin/System/`
 **Carregamento:** lazy ([[04-performance]])
 
 ## O que faz
@@ -17,7 +17,7 @@ Informações do servidor (`GET /admin/system`), botão Atualizar: saúde + pool
 
 | Componente | Arquivo | O que faz |
 |---|---|---|
-| `Panel` / `Row` / `PoolRow` | inline em `AdminSystem.tsx` | seção com título · linha `dt`/`dd` · linha da tabela de pools |
+| `Panel` / `Row` / `PoolRow` | inline em `System.tsx` | seção com título · linha `dt`/`dd` · linha da tabela de pools |
 
 ## Hooks/funções exclusivos
 

@@ -11,10 +11,10 @@ const Home = lazy(() => import('./pages/Home/Home'))
 const AdminLayout = lazy(() =>
   import('./components/AdminLayout').then((m) => ({ default: m.AdminLayout })),
 )
-const AdminDashboard = lazy(() => import('./pages/AdminDashboard/AdminDashboard'))
-const AdminUsers = lazy(() => import('./pages/AdminUsers/AdminUsers'))
-const AdminAudit = lazy(() => import('./pages/AdminAudit/AdminAudit'))
-const AdminSystem = lazy(() => import('./pages/AdminSystem/AdminSystem'))
+const AdminDashboard = lazy(() => import('./pages/admin/Dashboard/Dashboard'))
+const AdminUsers = lazy(() => import('./pages/admin/Users/Users'))
+const AdminAudit = lazy(() => import('./pages/admin/Audit/Audit'))
+const AdminSystem = lazy(() => import('./pages/admin/System/System'))
 
 function PageFallback() {
   return (

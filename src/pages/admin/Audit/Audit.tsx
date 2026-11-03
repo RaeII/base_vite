@@ -1,6 +1,6 @@
 import { useState } from 'react'
-import { findAuditLog } from '../../api/admin/admin.routes'
-import { useApiData } from '../../hooks/useApiData'
+import { findAuditLog } from '../../../api/admin/admin.routes'
+import { useApiData } from '../../../hooks/useApiData'
 import { formatAuditAction, formatAuditDetail, formatDateTime, formatRelative } from '@/lib/format'
 import { cn } from '@/lib/utils'
 import { LoadError } from '@/components/LoadError'

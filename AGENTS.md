@@ -34,7 +34,7 @@ Sem suíte de testes configurada. Validação = `bun run build` (typecheck via `
 
 Detalhe e templates em `doc/` (vault Obsidian, [[wikilinks]]). Índice: `doc/index.md`.
 
-- **Uma pasta por página** em `src/pages/<Pagina>/`, documentada em `doc/paginas/<pagina>/`.
+- **Uma pasta por página** em `src/pages/<Pagina>/`, documentada em `doc/paginas/<pagina>/`. Páginas da área admin ficam em `src/pages/admin/<Pagina>/` + `doc/paginas/admin/<pagina>/`.
 - **shadcn/ui é a base**: primitivos (Button, Input, …) vêm de `bunx --bun shadcn@latest add <x>` → `src/components/ui/` (vendorizados, alias `@/`). Não escreva primitivo do zero. Cores usam os tokens da marca em `src/index.css` (sem paleta própria do shadcn). Doc: `doc/componentes/shadcn-ui.md`.
 - **Componente exclusivo da página** → `src/pages/<Pagina>/components/`. **Usado por 2+ páginas** → `src/components/` (global, compõe primitivos `ui/`).
 - **Todo componente global é documentado** em `doc/componentes/` — para reusar, não repetir. Exceção: primitivos em `src/components/ui/` (doc upstream).
